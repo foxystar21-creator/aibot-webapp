@@ -787,26 +787,7 @@ body{padding-bottom:24px;}
             </div>
 
             <div style="margin-top:8px;">
-                <div class="section-label">Настройки агента</div>
                 <div class="sett-card">
-                    <div class="sett-row" style="cursor:pointer" onclick="editAgentName(this)">
-                        <div class="sett-ico">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
-                        </div>
-                        <div class="sett-lbl">Имя агента</div>
-                        <div class="sett-val" id="agentNameVal">Саша</div>
-                        <div class="sett-arr" id="agentNameArr">›</div>
-                    </div>
-                    <div class="sett-row">
-                        <div class="sett-ico">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-                        </div>
-                        <div class="sett-lbl">Ответы</div>
-                        <div class="gender-seg" id="mode-seg">
-                            <div class="g-opt active" onclick="setMode('text')">Текст</div>
-                            <div class="g-opt" onclick="setMode('voice')">Голос</div>
-                        </div>
-                    </div>
                     <div class="sett-row danger" style="cursor:pointer" onclick="restartBot()">
                         <div class="sett-ico">
                             <svg viewBox="0 0 24 24" fill="none" stroke="#E55353" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
@@ -1095,9 +1076,6 @@ function gSeg(el) {
 }
 function setMode(mode) {
     CURRENT_MODE = mode;
-    const settOpts = document.querySelectorAll('#mode-seg .g-opt');
-    settOpts.forEach(o => o.classList.remove('active'));
-    settOpts[mode === 'voice' ? 1 : 0]?.classList.add('active');
     const mainOpts = document.querySelectorAll('#main-mode-seg .seg-opt');
     mainOpts.forEach(o => o.classList.remove('active'));
     mainOpts[mode === 'voice' ? 1 : 0]?.classList.add('active');

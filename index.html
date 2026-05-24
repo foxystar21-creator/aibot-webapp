@@ -1299,9 +1299,9 @@ function rebuildChart(data, growth) {
 
 function rebuildUsage(roles) {
     const list = document.getElementById('usage-list');
-    if (!list || !roles.length) return;
+    if (!list || roles.length < 2) return;
     list.innerHTML = '';
-    roles.forEach((r, i) => {
+    roles.slice(1).forEach((r, i) => {
         const name = ROLE_NAMES_RU[r.id] || r.id;
         const img = getRoleImg(r.id);
         const row = document.createElement('div'); row.className = 'usage-row';

@@ -1127,19 +1127,7 @@ function pick(el) {
     });
 })();
 
-// ════════════════════ TIMER (fake, overridden by applyStats if real data available) ════════════════════
-var _fakeTimer = (function() {
-    var end = Date.now() + (1*86400 + 14*3600 + 32*60 + 7) * 1000;
-    function tick() {
-        var diff = Math.max(0, Math.floor((end - Date.now()) / 1000));
-        document.getElementById('td').textContent = String(Math.floor(diff/86400)).padStart(2,'0');
-        document.getElementById('th').textContent = String(Math.floor((diff%86400)/3600)).padStart(2,'0');
-        document.getElementById('tm').textContent = String(Math.floor((diff%3600)/60)).padStart(2,'0');
-        document.getElementById('ts').textContent = String(diff%60).padStart(2,'0');
-    }
-    tick();
-    return setInterval(tick, 1000);
-})();
+var _fakeTimer = null; // будет заменён реальным таймером из applyStats
 
 // ════════════════════ COPY REFERRAL ════════════════════
 function copyRef() {

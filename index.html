@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AIBOT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{
+    --bg:#E5EAF3;
+    --bg-2:#EEF1F8;
+    --card:#FFFFFF;
+    --primary:#4B6BFB;
+    --primary-deep:#3D58E0;
+    --primary-soft:#DCE3FF;
+    --primary-softer:#EEF2FF;
+    --text:#11162B;
+    --text-2:#5A627A;
+    --muted:#9CA3B8;
+    --line:#E6EAF3;
+    --success:#18B57A;
+    --warn:#F2B137;
+    --peach:#F7DCC8;
+    --butter:#F4E9C8;
+    --lilac:#DCE2F5;
+    --radius-lg:28px;
+    --radius-md:20px;
+    --radius-sm:14px;
+    --shadow-card:0 6px 22px rgba(43,55,98,0.07);
+    --shadow-soft:0 4px 14px rgba(43,55,98,0.05);
+    --shadow-deep:0 10px 30px rgba(75,107,251,0.28);
+    --font:'Onest', -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif;
+    --font-display:'Space Grotesk','Onest', -apple-system, BlinkMacSystemFont, sans-serif;
+    --ava:linear-gradient(135deg,#4B6BFB,#7B95FF);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body{padding-bottom:24px;}
+
+/* container — responsive: phone-width on mobile, centered max-width on desktop */
+.app{max-width:480px;margin:0 auto;padding:0 16px;}
+@media(min-width:540px){
+    body{background:linear-gradient(160deg,#E5EAF3 0%,#DDE3F1 100%);}
+    .app{margin-top:18px;margin-bottom:18px;background:var(--bg);border-radius:36px;padding:8px 16px 24px;box-shadow:0 30px 80px rgba(43,55,98,0.18);}
+}
+
+/* SCREENS */
+.screen{display:none;animation:fade .25s ease;}
+.screen.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* HEADER */
+.header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 4px 18px;
+}
+.header-user{display:flex;align-items:center;gap:12px;}
+.user-photo{
+    width:46px;height:46px;border-radius:50%;
+    background:var(--ava) center/cover;
+    box-shadow:0 4px 12px rgba(43,55,98,0.18);
+    flex-shrink:0;
+}
+.greet{font-size:13px;color:var(--text-2);font-weight:500;letter-spacing:-.1px;}
+.user-name{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-top:1px;}
+
+.icon-circle{
+    width:44px;height:44px;border-radius:50%;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    border:none;cursor:pointer;
+    box-shadow:var(--shadow-soft);
+    transition:transform .15s;
+}
+.icon-circle:active{transform:scale(.92);}
+.icon-circle svg{width:18px;height:18px;stroke:var(--text);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+.header-back{
+    background:#fff;border:none;border-radius:50%;
+    width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;box-shadow:var(--shadow-soft);
+}
+.header-back svg{width:18px;height:18px;stroke:var(--text);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.page-title{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.5px;}
+
+/* CONTENT */
+.content{display:flex;flex-direction:column;gap:14px;}
+
+/* CARDS */
+.card{background:var(--card);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);}
+
+/* HERO ROLE CARD (mimics reference Calorie hero with image) */
+.hero-role{
+    position:relative;overflow:hidden;
+    background:linear-gradient(135deg,#E8EDFF 0%, #DCE3FF 60%, #C8D2FF 100%);
+    padding:18px 18px 18px;
+    display:flex;align-items:center;gap:16px;
+    min-height:148px;
+}
+.hero-photo{
+    width:118px;height:118px;border-radius:30px;
+    background:var(--ava) center/cover;
+    flex-shrink:0;
+    box-shadow:0 12px 28px rgba(43,55,98,0.22);
+    border:3px solid #fff;
+}
+.hero-text{flex:1;min-width:0;}
+.hero-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);
+    padding:5px 10px;border-radius:999px;font-size:11px;font-weight:700;
+    color:var(--primary-deep);letter-spacing:.3px;text-transform:uppercase;
+}
+.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 3px rgba(75,107,251,.2);}
+.hero-name{font-family:var(--font-display);font-size:30px;font-weight:700;letter-spacing:-1px;line-height:1.05;margin-top:8px;}
+.hero-sub{font-size:13px;color:var(--text-2);margin-top:6px;font-weight:500;}
+.change-btn{
+    margin-top:12px;
+    background:var(--primary);color:#fff;border:none;
+    border-radius:14px;padding:11px 18px;
+    font-family:var(--font);font-size:13px;font-weight:700;
+    cursor:pointer;letter-spacing:-.1px;
+    display:inline-flex;align-items:center;gap:8px;
+    box-shadow:var(--shadow-deep);transition:transform .15s;
+}
+.change-btn:active{transform:scale(.96);}
+.change-btn svg{width:14px;height:14px;stroke:#fff;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+/* TOGGLES inside hero card */
+.toggles{
+    display:flex;gap:8px;padding:0 0 0;margin-top:14px;
+}
+.seg-ctrl{
+    flex:1;background:rgba(255,255,255,.55);border-radius:14px;padding:4px;display:flex;
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.7);
+}
+.seg-opt{
+    flex:1;text-align:center;padding:9px 4px;
+    font-size:12px;font-weight:600;border-radius:10px;
+    cursor:pointer;color:var(--text-2);transition:all .2s;user-select:none;
+    letter-spacing:-.1px;
+}
+.seg-opt.active{
+    background:var(--primary);color:#fff;font-weight:700;
+    box-shadow:0 4px 12px rgba(75,107,251,.35);
+}
+
+/* STATS ROW */
+.stats-row{display:flex;gap:12px;}
+.stat-tile{
+    flex:1;border-radius:24px;padding:16px 16px 14px;
+    box-shadow:var(--shadow-soft);
+    background:#fff;display:flex;flex-direction:column;gap:6px;
+    position:relative;overflow:hidden;
+    min-height:138px;
+}
+.stat-tile::before{
+    content:'';position:absolute;inset:0;
+    z-index:0;pointer-events:none;
+    opacity:.8;
+}
+.stat-tile.butter{background:#FBF1D6;}
+.stat-tile.butter::before{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='44' viewBox='0 0 90 44'><path d='M0 22 Q 22 4 45 22 T 90 22' fill='none' stroke='%23ffffff' stroke-width='1.1' stroke-linecap='round'/><path d='M0 36 Q 22 18 45 36 T 90 36' fill='none' stroke='%23ffffff' stroke-width='1.1' stroke-linecap='round' opacity='0.55'/></svg>");
+    background-size:120px 60px;
+}
+.stat-tile.peach{background:#FCE2D2;}
+.stat-tile.peach::before{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'><circle cx='14' cy='18' r='2.4' fill='%23ffffff'/><circle cx='42' cy='10' r='1.6' fill='%23ffffff' opacity='0.7'/><circle cx='56' cy='34' r='2.8' fill='%23ffffff' opacity='0.85'/><circle cx='22' cy='46' r='1.8' fill='%23ffffff' opacity='0.65'/><circle cx='62' cy='58' r='1.5' fill='%23ffffff' opacity='0.6'/><circle cx='8' cy='62' r='2.2' fill='%23ffffff' opacity='0.8'/><circle cx='34' cy='62' r='1.4' fill='%23ffffff' opacity='0.55'/></svg>");
+    background-size:96px 96px;
+}
+.stat-tile > *{position:relative;z-index:1;}
+.stat-tile .stat-icon-circle{
+    width:54px;height:54px;border-radius:18px;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 16px rgba(43,55,98,.10);
+    position:absolute;top:14px;right:14px;z-index:1;
+}
+.stat-tile .stat-icon-circle svg{width:40px;height:40px;}
+.stat-val{font-family:var(--font-display);font-size:34px;font-weight:700;letter-spacing:-1.2px;line-height:1;margin-top:56px;color:#3a2a14;font-variant-numeric:tabular-nums;}
+.stat-tile.peach .stat-val{color:#4a2418;}
+.stat-val small{font-size:14px;font-weight:600;opacity:.7;}
+.stat-lbl{font-size:13px;font-weight:600;margin-top:6px;color:rgba(0,0,0,.55);}
+
+/* CHART CARD */
+.chart-card{padding:18px 18px 18px;}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+.card-title{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-.4px;}
+.card-sub{font-size:13px;color:var(--text-2);font-weight:500;margin-top:2px;}
+.pill-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--primary-softer);padding:8px 12px;border-radius:14px;
+}
+.pill-tag .pill-icon{
+    width:26px;height:26px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;
+}
+.pill-tag .pill-icon svg{width:14px;height:14px;}
+.pill-tag .pill-num{font-size:14px;font-weight:800;color:var(--text);line-height:1;}
+.pill-tag .pill-lbl{font-size:10px;color:var(--text-2);font-weight:600;margin-top:1px;}
+
+.bars{
+    display:flex;align-items:flex-end;gap:6px;height:160px;margin-top:18px;
+}
+.bar-col{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;
+    height:100%;justify-content:flex-end;
+}
+.bar-track{
+    width:100%;flex:1;background:var(--bg-2);border-radius:999px;
+    position:relative;overflow:hidden;
+    display:flex;align-items:flex-end;
+    min-height:80px;
+}
+.bar-fill{
+    width:100%;background:var(--primary);border-radius:999px;
+    transition:height .5s cubic-bezier(.34,1.2,.64,1);
+    position:relative;
+}
+.bar-fill.today{background:var(--primary-deep);}
+.bar-fill.today::after{
+    content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);
+    width:10px;height:10px;background:#fff;border-radius:50%;
+    box-shadow:0 0 0 3px var(--primary-deep);
+}
+.bar-day{font-size:11px;color:var(--text-2);font-weight:600;}
+
+/* FAVORITE ROLE */
+.fav-card{padding:18px;}
+.fav-inner{display:flex;align-items:center;gap:14px;margin-top:14px;}
+.fav-ava{
+    width:58px;height:58px;border-radius:18px;
+    background:var(--ava) center/cover;
+    flex-shrink:0;border:2px solid #fff;
+    box-shadow:0 4px 12px rgba(43,55,98,.1);
+}
+.fav-name{font-size:17px;font-weight:800;letter-spacing:-.3px;}
+.fav-joke{font-size:13px;color:var(--text-2);margin-top:2px;}
+.fav-pct{
+    margin-left:auto;
+    background:var(--primary-softer);color:var(--primary-deep);
+    border-radius:12px;padding:8px 12px;font-size:14px;font-weight:800;
+}
+
+/* USAGE BARS */
+.usage-card{padding:18px;}
+.usage-list{margin-top:16px;display:flex;flex-direction:column;gap:14px;}
+.usage-row{display:flex;align-items:center;gap:12px;}
+.u-ava{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--ava) center/cover;flex-shrink:0;
+    border:1.5px solid #fff;box-shadow:0 2px 6px rgba(43,55,98,.1);
+}
+.u-info{flex:1;min-width:0;}
+.u-name-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.u-name{font-size:14px;font-weight:700;letter-spacing:-.1px;}
+.u-pct{font-size:13px;font-weight:700;color:var(--text-2);}
+.u-track{height:6px;background:var(--bg-2);border-radius:999px;overflow:hidden;}
+.u-bar{height:100%;border-radius:999px;background:var(--primary);transition:width .6s ease;}
+.u-bar.c1{background:var(--primary);}
+.u-bar.c2{background:#18B57A;}
+.u-bar.c3{background:#FF6B8A;}
+.u-bar.c4{background:#F2B137;}
+.u-bar.c5{background:#9CA3B8;}
+
+/* SUBSCRIPTION CARD - light variant matching reference */
+.sub-card{
+    padding:20px;
+    background:linear-gradient(135deg,#4B6BFB 0%, #6B7FFF 100%);
+    color:#fff;
+    position:relative;overflow:hidden;
+}
+.sub-card::before{
+    content:'';position:absolute;top:-40px;right:-40px;
+    width:160px;height:160px;border-radius:50%;
+    background:rgba(255,255,255,.08);
+}
+.sub-card::after{
+    content:'';position:absolute;bottom:-60px;left:-30px;
+    width:140px;height:140px;border-radius:50%;
+    background:rgba(255,255,255,.06);
+}
+.sub-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(255,255,255,0.2);backdrop-filter:blur(6px);
+    border-radius:999px;padding:5px 11px;font-size:11px;font-weight:700;
+    letter-spacing:.4px;text-transform:uppercase;
+    position:relative;
+}
+.sub-heading{font-size:13px;opacity:.85;margin:12px 0 14px;font-weight:500;position:relative;}
+.timer-row{display:flex;gap:8px;margin-bottom:18px;position:relative;}
+.t-block{
+    background:rgba(255,255,255,.18);backdrop-filter:blur(8px);
+    border-radius:14px;padding:12px 0;text-align:center;flex:1;
+}
+.t-num{font-family:var(--font-display);font-size:22px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
+.t-lbl{font-size:10px;opacity:.7;margin-top:4px;font-weight:600;}
+.sub-btn-row{display:flex;gap:10px;position:relative;}
+.sub-btn{
+    flex:1;background:#fff;color:var(--primary-deep);border:none;
+    border-radius:14px;padding:13px;font-size:14px;font-weight:800;
+    cursor:pointer;font-family:var(--font);transition:transform .15s;
+    letter-spacing:-.1px;
+}
+.sub-btn:active{transform:scale(.97);}
+.sub-btn-sec{
+    background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(6px);
+    border-radius:14px;padding:13px 16px;font-size:14px;font-weight:700;
+    border:none;cursor:pointer;font-family:var(--font);
+}
+
+/* REFERRAL */
+.ref-card{padding:16px;display:flex;align-items:center;gap:14px;background:var(--butter);}
+.ref-ico{
+    width:48px;height:48px;border-radius:50%;background:#fff;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    box-shadow:var(--shadow-soft);
+}
+.ref-ico svg{width:22px;height:22px;}
+.ref-title{font-size:15px;font-weight:800;letter-spacing:-.2px;}
+.ref-sub{font-size:12px;color:var(--text-2);margin-top:2px;font-weight:500;}
+.ref-copy{
+    background:var(--primary);color:#fff;border:none;
+    border-radius:12px;padding:10px 14px;
+    font-size:13px;font-weight:700;cursor:pointer;
+    font-family:var(--font);transition:transform .15s;flex-shrink:0;
+    box-shadow:var(--shadow-deep);
+}
+.ref-copy:active{transform:scale(.94);}
+
+/* BOTTOM CLOSE */
+.btn-close{
+    margin-top:6px;
+    background:#fff;color:var(--text);border:none;
+    border-radius:18px;padding:16px;
+    font-size:16px;font-weight:700;cursor:pointer;
+    width:100%;font-family:var(--font);
+    box-shadow:var(--shadow-card);transition:transform .15s;
+}
+.btn-close:active{transform:scale(.98);}
+
+/* ROLES LIST */
+.roles-list{
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;
+}
+.role-card{
+    position:relative;
+    aspect-ratio:3/4;
+    border-radius:22px;
+    overflow:hidden;
+    background:var(--ava) center/cover;
+    cursor:pointer;
+    box-shadow:var(--shadow-soft);
+    border:3px solid transparent;
+    transition:all .2s;
+    isolation:isolate;
+}
+.role-card.active{
+    border-color:var(--primary);
+    box-shadow:0 10px 26px rgba(75,107,251,.32);
+    transform:translateY(-2px);
+}
+.role-card:active{transform:scale(.985);}
+.role-card.active:active{transform:translateY(-2px) scale(.985);}
+.role-card-overlay{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:38px 14px 14px;
+    background:linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.65) 35%, rgba(0,0,0,.25) 75%, transparent 100%);
+    color:#fff;
+    z-index:1;
+}
+.role-card-name{
+    font-family:var(--font-display);
+    font-size:17px;font-weight:700;letter-spacing:-.3px;
+    line-height:1.15;
+    text-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+.role-card-sub{
+    font-size:12px;font-weight:600;
+    color:#a9c0ff;
+    margin-top:3px;letter-spacing:-.05px;
+    text-shadow:0 1px 3px rgba(0,0,0,.5);
+}
+.role-card-desc{
+    font-size:11.5px;font-weight:500;
+    color:rgba(255,255,255,.85);
+    line-height:1.4;margin-top:5px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+    overflow:hidden;
+    text-shadow:0 1px 3px rgba(0,0,0,.5);
+}
+.active-check{
+    position:absolute;top:10px;right:10px;
+    width:28px;height:28px;background:var(--primary);
+    border-radius:50%;border:2.5px solid #fff;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.3);
+    z-index:2;
+}
+.active-check svg{width:13px;height:13px;stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+/* AGENT SETTINGS */
+.section-label{
+    font-size:12px;font-weight:700;color:var(--text-2);
+    text-transform:uppercase;letter-spacing:.5px;
+    padding:0 4px;margin-bottom:4px;
+}
+.sett-card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-card);overflow:hidden;}
+.sett-row{
+    display:flex;align-items:center;padding:16px 18px;gap:14px;
+    border-bottom:1px solid var(--line);
+}
+.sett-row:last-child{border-bottom:none;}
+.sett-ico{
+    width:36px;height:36px;border-radius:12px;
+    background:var(--primary-softer);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.sett-ico svg{width:16px;height:16px;}
+.sett-lbl{flex:1;font-size:15px;font-weight:600;}
+.sett-lbl-hint{font-size:12px;color:var(--text-2);font-weight:500;margin-top:3px;line-height:1.35;}
+.sett-val{font-size:14px;color:var(--text-2);font-weight:500;}
+.sett-arr{font-size:18px;color:var(--muted);margin-left:4px;}
+.gender-seg{display:flex;background:var(--bg-2);border-radius:11px;padding:3px;}
+.g-opt{padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;color:var(--text-2);transition:all .2s;user-select:none;font-weight:600;letter-spacing:-.1px;}
+.g-opt.active{background:var(--primary);color:#fff;font-weight:700;box-shadow:0 3px 10px rgba(75,107,251,.35);}
+.sett-row.danger .sett-lbl{color:#E55353;}
+.sett-row.danger .sett-lbl-hint{color:var(--text-2);font-weight:500;}
+.sett-row.danger .sett-ico{background:#FFE5E5;}
+
+/* PROFILE GENDER BUTTONS */
+.gender-big{
+    flex:1;padding:22px 10px;border-radius:22px;
+    background:var(--bg-2);border:2.5px solid transparent;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    cursor:pointer;transition:all .2s;user-select:none;
+}
+.gender-big.active{border-color:var(--primary);background:var(--primary-softer);}
+.gender-big:active{transform:scale(.95);}
+.gender-big-icon{font-size:40px;line-height:1;}
+.gender-big-name{font-size:15px;font-weight:700;letter-spacing:-.2px;}
+
+/* PROFILE NAME INPUT */
+.name-input{
+    width:100%;padding:14px 16px;
+    border-radius:14px;border:2px solid var(--line);
+    font-family:var(--font);font-size:16px;font-weight:600;color:var(--text);
+    background:var(--bg-2);outline:none;transition:border-color .2s;
+}
+.name-input:focus{border-color:var(--primary);}
+.name-input::placeholder{color:var(--muted);font-weight:500;}
+
+/* ICON SVG colors */
+.i-blue{stroke:var(--primary-deep);}
+.i-blue-fill{fill:var(--primary);}
+.i-text{stroke:var(--text);}
+.i-green{stroke:var(--success);}
+.i-warn{stroke:var(--warn);}
+.i-red{stroke:#E55353;}
+
+/* ════════════════════ PAY MODAL ════════════════════ */
+.modal-backdrop{
+    position:fixed;inset:0;z-index:1000;
+    background:rgba(17,22,43,.45);backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    display:flex;align-items:flex-end;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.modal-backdrop.open{opacity:1;pointer-events:auto;}
+.modal-sheet{
+    width:100%;max-width:480px;
+    background:var(--bg);
+    border-radius:32px 32px 0 0;
+    padding:14px 18px 22px;
+    transform:translateY(100%);transition:transform .35s cubic-bezier(.32,1.1,.4,1);
+    box-shadow:0 -20px 60px rgba(0,0,0,.2);
+    max-height:92vh;overflow-y:auto;
+}
+@media(min-width:540px){
+    .modal-backdrop{align-items:center;}
+    .modal-sheet{border-radius:32px;margin:0 16px;transform:scale(.95);opacity:0;transition:transform .3s ease,opacity .3s ease;}
+    .modal-backdrop.open .modal-sheet{transform:scale(1);opacity:1;}
+}
+.modal-backdrop.open .modal-sheet{transform:translateY(0);}
+.modal-grabber{
+    width:42px;height:4px;border-radius:999px;
+    background:rgba(17,22,43,.18);
+    margin:0 auto 6px;
+}
+@media(min-width:540px){.modal-grabber{display:none;}}
+.modal-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:8px 4px 14px;
+}
+.modal-title{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.5px;}
+.modal-sub{font-size:13px;color:var(--text-2);margin-top:2px;font-weight:500;}
+
+.plan-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.plan{
+    position:relative;
+    background:#fff;border-radius:22px;
+    padding:16px 18px;
+    display:flex;align-items:center;gap:14px;
+    cursor:pointer;user-select:none;
+    border:2px solid transparent;
+    transition:all .2s;
+    box-shadow:var(--shadow-soft);
+}
+.plan:active{transform:scale(.985);}
+.plan.selected{border-color:var(--primary);background:var(--primary-softer);box-shadow:0 8px 22px rgba(75,107,251,.18);}
+.plan-radio{
+    width:24px;height:24px;border-radius:50%;
+    border:2px solid var(--line);
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    background:#fff;transition:all .2s;
+}
+.plan.selected .plan-radio{border-color:var(--primary);background:var(--primary);}
+.plan-radio::after{
+    content:'';width:8px;height:8px;border-radius:50%;
+    background:#fff;transform:scale(0);transition:transform .2s;
+}
+.plan.selected .plan-radio::after{transform:scale(1);}
+.plan-body{flex:1;min-width:0;}
+.plan-name{font-size:16px;font-weight:700;letter-spacing:-.2px;display:flex;align-items:center;gap:8px;}
+.plan-badge{
+    font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;
+    background:var(--success);color:#fff;
+    padding:3px 8px;border-radius:999px;
+}
+.plan-desc{font-size:12px;color:var(--text-2);margin-top:3px;font-weight:500;}
+.plan-price{text-align:right;flex-shrink:0;}
+.plan-old{font-size:13px;color:var(--text-2);text-decoration:line-through;font-weight:500;}
+.plan-new{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.4px;line-height:1.1;color:var(--text);}
+.plan-per{font-size:11px;color:var(--text-2);font-weight:500;margin-top:1px;}
+
+.pay-btn{
+    width:100%;background:var(--primary);color:#fff;border:none;
+    border-radius:18px;padding:16px;
+    font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font);
+    box-shadow:var(--shadow-deep);transition:transform .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    letter-spacing:-.1px;
+}
+.pay-btn:active{transform:scale(.98);}
+.pay-note{
+    font-size:11px;color:var(--text-2);text-align:center;
+    margin-top:12px;font-weight:500;line-height:1.5;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ MAIN SCREEN ════════════════════ -->
+<div class="screen active" id="main">
+    <div class="app">
+
+        <div class="header">
+            <div class="header-user">
+                <div class="user-photo"></div>
+                <div>
+                    <div class="greet">Доброе утро 👋</div>
+                    <div class="user-name">Алексей</div>
+                </div>
+            </div>
+            <button class="icon-circle" onclick="closeApp()" aria-label="Закрыть">
+                <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="content">
+
+            <!-- HERO ROLE -->
+            <div class="card hero-role">
+                <div class="hero-photo" style="background-image:url('roles/bratan.jpg')"></div>
+                <div class="hero-text">
+                    <div class="hero-tag"><span class="dot"></span> Сейчас активна</div>
+                    <div class="hero-name">Братан</div>
+                    <div class="hero-sub">Свой парень, всегда на твоей стороне</div>
+                    <button class="change-btn" onclick="goTo('roles')">
+                        Сменить роль
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TOGGLES -->
+            <div class="toggles">
+                <div class="seg-ctrl">
+                    <div class="seg-opt active" onclick="seg(this)">Нейтральный</div>
+                    <div class="seg-opt" onclick="seg(this)">Лаконичный</div>
+                </div>
+                <div class="seg-ctrl">
+                    <div class="seg-opt active" onclick="seg(this)">Текст</div>
+                    <div class="seg-opt" onclick="seg(this)">Голос</div>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-row">
+                <div class="stat-tile butter">
+                    <div class="stat-icon-circle">
+                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <defs><linearGradient id="flame" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFB13A"/><stop offset="100%" stop-color="#F26A2E"/></linearGradient></defs>
+                            <path fill="url(#flame)" d="M16 2c1.5 4.5 6 7 6 12a6 6 0 1 1-12 0c0-2 .8-3.4 1.8-4.6-.4 4 2.4 5 3 3.2.7-2.6-1.6-4.6-1.4-7.4.2-1.8 1.2-2.6 2.6-3.2z"/>
+                            <path fill="#FFD27A" opacity="0.75" d="M16 14c.6 2.2 2.5 3 2.5 5.2A2.5 2.5 0 0 1 13 19.5c0-1.4 1-2 1.6-3 .1 1.4 1 1.6 1.4.6.3-1-.5-1.6-.5-2.6 0-.6.5-1.1 1.5-1.5z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-val">12</div>
+                    <div class="stat-lbl">Дней подряд</div>
+                </div>
+                <div class="stat-tile peach">
+                    <div class="stat-icon-circle">
+                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <defs><linearGradient id="chat" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#F39A75"/><stop offset="100%" stop-color="#D9684A"/></linearGradient></defs>
+                            <path fill="url(#chat)" d="M6 7a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v9a4 4 0 0 1-4 4h-7.2L9 25.4c-.6.5-1.5.1-1.5-.7V20H10 6.5C6.2 20 6 19.8 6 19.5V7z"/>
+                            <circle cx="12" cy="11.5" r="1.6" fill="#fff"/>
+                            <circle cx="16" cy="11.5" r="1.6" fill="#fff"/>
+                            <circle cx="20" cy="11.5" r="1.6" fill="#fff"/>
+                        </svg>
+                    </div>
+                    <div class="stat-val">4 821</div>
+                    <div class="stat-lbl">Слов написано</div>
+                </div>
+            </div>
+
+            <!-- CHART -->
+            <div class="card chart-card">
+                <div class="card-head">
+                    <div>
+                        <div class="card-title">Активность</div>
+                        <div class="card-sub">Последние 14 дней</div>
+                    </div>
+                    <div class="pill-tag">
+                        <div class="pill-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        </div>
+                        <div>
+                            <div class="pill-num">+12%</div>
+                            <div class="pill-lbl">за неделю</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bars" id="chart"></div>
+            </div>
+
+            <!-- FAVORITE ROLE -->
+            <div class="card fav-card">
+                <div class="card-head" style="margin-bottom:0;">
+                    <div>
+                        <div class="card-title">Любимая роль</div>
+                        <div class="card-sub">по количеству сообщений</div>
+                    </div>
+                </div>
+                <div class="fav-inner">
+                    <div class="fav-ava" style="background-image:url('roles/bratan.jpg')"></div>
+                    <div>
+                        <div class="fav-name">Братан</div>
+                        <div class="fav-joke">Не можешь без него 😄</div>
+                    </div>
+                    <div class="fav-pct">42%</div>
+                </div>
+            </div>
+
+            <!-- ROLE USAGE -->
+            <div class="card usage-card">
+                <div class="card-head" style="margin-bottom:0;">
+                    <div>
+                        <div class="card-title">Использование ролей</div>
+                        <div class="card-sub">% от всех сообщений</div>
+                    </div>
+                </div>
+                <div class="usage-list">
+                    <div class="usage-row">
+                        <div class="u-ava" data-role="friend" style="background-image:url('roles/drug.jpg')"></div>
+                        <div class="u-info">
+                            <div class="u-name-row"><div class="u-name">Друг</div><div class="u-pct">28%</div></div>
+                            <div class="u-track"><div class="u-bar c2" style="width:28%"></div></div>
+                        </div>
+                    </div>
+                    <div class="usage-row">
+                        <div class="u-ava" data-role="sexy" style="background-image:url('roles/sexyf.jpg')"></div>
+                        <div class="u-info">
+                            <div class="u-name-row"><div class="u-name">Секси</div><div class="u-pct">15%</div></div>
+                            <div class="u-track"><div class="u-bar c3" style="width:15%"></div></div>
+                        </div>
+                    </div>
+                    <div class="usage-row">
+                        <div class="u-ava" data-role="businessman" style="background-image:url('roles/businessman.jpg')"></div>
+                        <div class="u-info">
+                            <div class="u-name-row"><div class="u-name">Бизнесмен</div><div class="u-pct">10%</div></div>
+                            <div class="u-track"><div class="u-bar c4" style="width:10%"></div></div>
+                        </div>
+                    </div>
+                    <div class="usage-row">
+                        <div class="u-ava" data-role="lawyer" style="background-image:url('roles/urist.jpg')"></div>
+                        <div class="u-info">
+                            <div class="u-name-row"><div class="u-name">Юрист</div><div class="u-pct">5%</div></div>
+                            <div class="u-track"><div class="u-bar c5" style="width:5%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBSCRIPTION -->
+            <div class="card sub-card">
+                <div class="sub-badge">🎁 Пробный период</div>
+                <div class="sub-heading">До конца доступа осталось:</div>
+                <div class="timer-row">
+                    <div class="t-block"><div class="t-num" id="td">01</div><div class="t-lbl">дней</div></div>
+                    <div class="t-block"><div class="t-num" id="th">14</div><div class="t-lbl">часов</div></div>
+                    <div class="t-block"><div class="t-num" id="tm">32</div><div class="t-lbl">минут</div></div>
+                    <div class="t-block"><div class="t-num" id="ts">07</div><div class="t-lbl">секунд</div></div>
+                </div>
+                <div class="sub-btn-row">
+                    <button class="sub-btn" onclick="openPay()">🚀 Продлить подписку</button>
+                </div>
+            </div>
+
+            <!-- REFERRAL -->
+            <div class="card ref-card">
+                <div class="ref-ico">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#F2B137" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+                </div>
+                <div style="flex:1">
+                    <div class="ref-title">Пригласи друга</div>
+                    <div class="ref-sub">+3 дня за каждого</div>
+                </div>
+                <button class="ref-copy" id="ref-btn" onclick="copyRef()">Копировать</button>
+            </div>
+
+            <button class="btn-close" onclick="closeApp()">Закрыть</button>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ════════════════════ ROLES SCREEN ════════════════════ -->
+<div class="screen" id="roles">
+    <div class="app">
+
+        <div class="header">
+            <button class="header-back" onclick="goTo('main')" aria-label="Назад">
+                <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="page-title">Выбор роли</div>
+            <button class="icon-circle" onclick="closeApp()" aria-label="Закрыть">
+                <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="content">
+
+            <div class="roles-list" id="roles-grid">
+                <!-- generated via JS to keep markup tidy -->
+            </div>
+
+            <div style="margin-top:8px;">
+                <div class="section-label">Настройки агента</div>
+                <div class="sett-card">
+                    <div class="sett-row">
+                        <div class="sett-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+                        </div>
+                        <div class="sett-lbl">Пол агента</div>
+                        <div class="gender-seg">
+                            <div class="g-opt active" onclick="gSeg(this)">Муж</div>
+                            <div class="g-opt" onclick="gSeg(this)">Жен</div>
+                        </div>
+                    </div>
+                    <div class="sett-row" style="cursor:pointer" onclick="editAgentName(this)">
+                        <div class="sett-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+                        </div>
+                        <div class="sett-lbl">Имя агента</div>
+                        <div class="sett-val" id="agentNameVal">Саша</div>
+                        <div class="sett-arr" id="agentNameArr">›</div>
+                    </div>
+                    <div class="sett-row danger" style="cursor:pointer" onclick="restartBot()">
+                        <div class="sett-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#E55353" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                        </div>
+                        <div class="sett-lbl">Перезапустить бота<div class="sett-lbl-hint">Нажимать только тогда, когда бот завис, или хотите поменять свой пол или имя.</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex;gap:10px;">
+                <button class="btn-close" style="flex:1" onclick="goTo('main')">← Назад</button>
+                <button class="btn-close" style="flex:1;background:var(--primary);color:#fff;box-shadow:var(--shadow-deep);" onclick="closeApp()">Закрыть</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ════════════════════ PROFILE SCREEN ════════════════════ -->
+<div class="screen" id="profile">
+    <div class="app">
+
+        <div class="header">
+            <div style="width:44px"></div>
+            <div class="page-title">О себе</div>
+            <button class="icon-circle" onclick="closeApp()" aria-label="Закрыть">
+                <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="content">
+
+            <div class="card" style="padding:22px">
+                <div class="card-title" style="margin-bottom:5px">Как тебя зовут?</div>
+                <div class="card-sub" style="margin-bottom:16px">Буду обращаться по имени</div>
+                <input id="profile-name" class="name-input" type="text" placeholder="Введи своё имя" maxlength="30" autocomplete="off">
+            </div>
+
+            <div class="card" style="padding:22px">
+                <div class="card-title" style="margin-bottom:5px">Ты...</div>
+                <div class="card-sub" style="margin-bottom:16px">Это поможет настроить общение</div>
+                <div style="display:flex;gap:12px">
+                    <div id="g-male" class="gender-big active" onclick="pickGender('male')">
+                        <div class="gender-big-icon">👨</div>
+                        <div class="gender-big-name">Парень</div>
+                    </div>
+                    <div id="g-female" class="gender-big" onclick="pickGender('female')">
+                        <div class="gender-big-icon">👩</div>
+                        <div class="gender-big-name">Девушка</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-close" style="background:var(--primary);color:#fff;box-shadow:var(--shadow-deep);margin-top:2px" onclick="saveProfile()">
+                Продолжить →
+            </button>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ════════════════════ PAY MODAL ════════════════════ -->
+<div class="modal-backdrop" id="pay-modal" onclick="if(event.target===this)closePay()">
+    <div class="modal-sheet">
+        <div class="modal-grabber"></div>
+        <div class="modal-head">
+            <div>
+                <div class="modal-title">Оформить подписку</div>
+                <div class="modal-sub">Выберите удобный вариант</div>
+            </div>
+            <button class="icon-circle" onclick="closePay()" aria-label="Закрыть">
+                <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="plan-list">
+            <div class="plan" data-plan="month" data-price="299" onclick="selectPlan(this)">
+                <div class="plan-radio"></div>
+                <div class="plan-body">
+                    <div class="plan-name">Месяц</div>
+                    <div class="plan-desc">Полный доступ на 30 дней</div>
+                </div>
+                <div class="plan-price">
+                    <div class="plan-new">299 ₽</div>
+                    <div class="plan-per">в месяц</div>
+                </div>
+            </div>
+
+            <div class="plan selected" data-plan="year" data-price="3276" onclick="selectPlan(this)">
+                <div class="plan-radio"></div>
+                <div class="plan-body">
+                    <div class="plan-name">Год <span class="plan-badge">-9%</span></div>
+                    <div class="plan-desc">Полный доступ на 12 месяцев</div>
+                </div>
+                <div class="plan-price">
+                    <div class="plan-old">3 588 ₽</div>
+                    <div class="plan-new">3 276 ₽</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="pay-btn" onclick="payNow()">
+            Оплатить <span id="pay-amount">3 276 ₽</span>
+        </button>
+        <div class="pay-note">Нажимая «Оплатить», вы соглашаетесь с условиями оферты<br>и политикой конфиденциальности</div>
+    </div>
+</div>
+
+<script>
+// ════════════════════ USER GENDER ════════════════════
+let USER_GENDER = 'male'; // set from profile screen or Telegram data
+
+// Gender-specific images: male user → female agent, female user → male agent
+const GENDER_IMGS = {
+    sexy:   { male: 'roles/sexyf.jpg',   female: 'roles/sexym.jpg'  },
+    friend: { male: 'roles/drug.jpg',    female: 'roles/podruga.jpg' },
+    bratan: { male: 'roles/bratan.jpg',  female: 'roles/sestra.jpg'  },
+};
+function getRoleImg(id) {
+    if (GENDER_IMGS[id]) return GENDER_IMGS[id][USER_GENDER];
+    const r = ROLES.find(x => x.id === id);
+    return r ? r.img : '';
+}
+function updateRoleImages() {
+    document.querySelectorAll('.role-card[data-id]').forEach(card => {
+        const img = getRoleImg(card.dataset.id);
+        card.style.backgroundImage = `url('${img}')`;
+        card.dataset.img = img;
+    });
+    // Update fav role avatar
+    const favAva = document.querySelector('.fav-ava');
+    if (favAva) favAva.style.backgroundImage = `url('${getRoleImg('bratan')}')`;
+    // Update usage row avatars
+    document.querySelectorAll('.u-ava[data-role]').forEach(a => {
+        a.style.backgroundImage = `url('${getRoleImg(a.dataset.role)}')`;
+    });
+}
+
+// ════════════════════ PROFILE ════════════════════
+function pickGender(g) {
+    USER_GENDER = g;
+    document.getElementById('g-male').classList.toggle('active', g === 'male');
+    document.getElementById('g-female').classList.toggle('active', g === 'female');
+}
+function saveProfile() {
+    const name = document.getElementById('profile-name').value.trim();
+    if (!name) { document.getElementById('profile-name').focus(); return; }
+    document.querySelector('.user-name').textContent = name;
+    document.querySelector('.greet').textContent = 'Добро пожаловать 👋';
+    localStorage.setItem('aibot_name', name);
+    localStorage.setItem('aibot_gender', USER_GENDER);
+    updateRoleImages();
+    goTo('roles');
+}
+
+// ════════════════════ ROLES DATA ════════════════════
+const ROLES = [
+    {id:'bratan',       name:'Братан / Сеструха', sub:'Свой в доску',              desc:'Поговорить за кружкой пива, излить душу.',                          img:'roles/bratan.jpg', active:true},
+    {id:'friend',       name:'Друг / Подруга',    sub:'Близкий собеседник',        desc:'Поддержка, советы и разговоры по душам.',                           img:'roles/drug.jpg'},
+    {id:'fitness',      name:'Фитнес тренер',     sub:'Мотивировочный движок',     desc:'План тренировок, мотивация, контроль тренировок.',                  img:'roles/trener.jpg'},
+    {id:'secretary',    name:'Секретарь',          sub:'Умный помощник',            desc:'Создание текстов, напоминания о делах.',                            img:'roles/sekretar.jpg'},
+    {id:'psychologist', name:'Психолог',           sub:'Участливый собеседник',     desc:'Разбор ситуаций, помощь в жизненных обстоятельствах.',              img:'roles/psiholog.jpg'},
+    {id:'tutor',        name:'Репетитор',          sub:'Внимательный учитель',      desc:'План учёбы, ежедневные уроки, проверка знаний.',                    img:'roles/repetitor.jpg'},
+    {id:'nutritionist', name:'Нутрициолог',        sub:'Эксперт по питанию',        desc:'Составление диеты, контроль калорий.',                              img:'roles/nutriciolog.jpg'},
+    {id:'businessman',  name:'Бизнесмен',          sub:'Только факты и цифры',      desc:'Всё о бизнесе и деньгах.',                                          img:'roles/businessman.jpg'},
+    {id:'lawyer',       name:'Юрист',              sub:'Беспристрастный профессионал', desc:'Объяснение сложных документов простыми словами.',               img:'roles/urist.jpg'},
+    {id:'marketer',     name:'Маркетолог',         sub:'Креативный тип',            desc:'Идеи для постов, помощь в настройке рекламы.',                     img:'roles/marketolog.jpg'},
+    {id:'hater',        name:'Хейтер',             sub:'Жёсткий критик',            desc:'Говорит то, что другие постесняются.',                              img:'roles/heyter.jpg'},
+    {id:'sexy',         name:'Секси',              sub:'Эротическая фантазия',      desc:'Горячие разговоры, запретные переписки.',                           img:'roles/sexyf.jpg'},
+];
+
+const grid = document.getElementById('roles-grid');
+ROLES.forEach(r => {
+    const t = document.createElement('div');
+    t.className = 'role-card' + (r.active ? ' active' : '');
+    t.dataset.id = r.id;
+    t.dataset.img = r.img;
+    t.style.backgroundImage = `url('${r.img}')`;
+    t.innerHTML = `
+        ${r.active ? '<div class="active-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
+        <div class="role-card-overlay">
+            <div class="role-card-name">${r.name}</div>
+            <div class="role-card-sub">${r.sub}</div>
+            <div class="role-card-desc">${r.desc}</div>
+        </div>
+    `;
+    t.addEventListener('click', () => pick(t));
+    grid.appendChild(t);
+});
+
+// ════════════════════ NAVIGATION ════════════════════
+function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+}
+function closeApp() {
+    if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.close();
+    } else {
+        window.close();
+    }
+}
+
+function editAgentName(row) {
+    const valEl = document.getElementById('agentNameVal');
+    const arrEl = document.getElementById('agentNameArr');
+    if (row.querySelector('input')) return; // already editing
+    const current = valEl.textContent.trim();
+    valEl.innerHTML = '';
+    arrEl.style.display = 'none';
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.value = current;
+    inp.maxLength = 20;
+    inp.style.cssText = 'border:none;outline:none;background:transparent;font:inherit;color:inherit;width:90px;text-align:right;';
+    inp.onclick = e => e.stopPropagation();
+    const save = () => {
+        const name = inp.value.trim() || current;
+        valEl.textContent = name;
+        arrEl.style.display = '';
+    };
+    inp.onblur = save;
+    inp.onkeydown = e => { if (e.key === 'Enter') inp.blur(); };
+    valEl.appendChild(inp);
+    inp.focus();
+    inp.select();
+}
+
+// ════════════════════ SEGMENT CONTROLS ════════════════════
+function seg(el) {
+    el.closest('.seg-ctrl').querySelectorAll('.seg-opt').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+}
+function gSeg(el) {
+    el.closest('.gender-seg').querySelectorAll('.g-opt').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+}
+
+// ════════════════════ ROLE SELECTION ════════════════════
+function pick(el) {
+    document.querySelectorAll('.role-card').forEach(t => {
+        t.classList.remove('active');
+        const c = t.querySelector('.active-check');
+        if (c) c.remove();
+    });
+    el.classList.add('active');
+    const check = document.createElement('div');
+    check.className = 'active-check';
+    check.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+    el.appendChild(check);
+
+    // Update hero on main screen
+    const name = el.querySelector('.role-card-name').textContent.split(' / ')[0];
+    const sub = el.querySelector('.role-card-sub').textContent;
+    document.querySelector('.hero-name').textContent = name;
+    const heroSub = document.querySelector('.hero-sub');
+    if (heroSub) heroSub.textContent = sub;
+    const img = el.dataset.img;
+    if (img) {
+        const heroPhoto = document.querySelector('.hero-photo');
+        if (heroPhoto) heroPhoto.style.backgroundImage = `url('${img}')`;
+    }
+}
+
+// ════════════════════ CHART ════════════════════
+(function() {
+    const data = [8,14,6,22,18,30,12,40,28,19,35,42,38,55];
+    const days = ['10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
+    const max = Math.max(...data);
+    const el = document.getElementById('chart');
+    data.forEach((v, i) => {
+        const col = document.createElement('div'); col.className = 'bar-col';
+        const track = document.createElement('div'); track.className = 'bar-track';
+        const bar = document.createElement('div');
+        bar.className = 'bar-fill' + (i === data.length-1 ? ' today' : '');
+        bar.style.height = '0%';
+        track.appendChild(bar);
+        const lbl = document.createElement('div'); lbl.className = 'bar-day'; lbl.textContent = days[i];
+        col.appendChild(track); col.appendChild(lbl);
+        el.appendChild(col);
+        setTimeout(() => {
+            bar.style.height = Math.max(8, Math.round((v/max)*100)) + '%';
+        }, 80 + i*40);
+    });
+})();
+
+// ════════════════════ TIMER ════════════════════
+(function() {
+    const end = Date.now() + (1*86400 + 14*3600 + 32*60 + 7) * 1000;
+    function tick() {
+        const diff = Math.max(0, Math.floor((end - Date.now()) / 1000));
+        document.getElementById('td').textContent = String(Math.floor(diff/86400)).padStart(2,'0');
+        document.getElementById('th').textContent = String(Math.floor((diff%86400)/3600)).padStart(2,'0');
+        document.getElementById('tm').textContent = String(Math.floor((diff%3600)/60)).padStart(2,'0');
+        document.getElementById('ts').textContent = String(diff%60).padStart(2,'0');
+    }
+    tick(); setInterval(tick, 1000);
+})();
+
+// ════════════════════ COPY REFERRAL ════════════════════
+function copyRef() {
+    const link = 'https://t.me/aibot?start=ref_12345';
+    const btn = document.getElementById('ref-btn');
+    navigator.clipboard?.writeText(link).then(() => {
+        btn.textContent = '✓ Готово';
+        btn.style.background = 'var(--success)';
+        setTimeout(() => { btn.textContent = 'Копировать'; btn.style.background = ''; }, 2000);
+    }).catch(() => {
+        btn.textContent = '✓ Готово';
+        setTimeout(() => btn.textContent = 'Копировать', 2000);
+    });
+}
+
+function restartBot() {
+    goTo('profile');
+}
+
+// ════════════════════ PAY MODAL ════════════════════
+function openPay(){
+    document.getElementById('pay-modal').classList.add('open');
+    document.body.style.overflow='hidden';
+}
+function closePay(){
+    document.getElementById('pay-modal').classList.remove('open');
+    document.body.style.overflow='';
+}
+function selectPlan(el){
+    document.querySelectorAll('#pay-modal .plan').forEach(p=>p.classList.remove('selected'));
+    el.classList.add('selected');
+    const price = el.dataset.price;
+    const formatted = Number(price).toLocaleString('ru-RU') + ' ₽';
+    document.getElementById('pay-amount').textContent = formatted;
+}
+function payNow(){
+    const sel = document.querySelector('#pay-modal .plan.selected');
+    if(!sel) return;
+    const plan = sel.dataset.plan;
+    const price = sel.dataset.price;
+    if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.sendData(JSON.stringify({action:'pay', plan, price}));
+    } else {
+        alert('Оплата: ' + (plan==='year'?'Год':'Месяц') + ' — ' + Number(price).toLocaleString('ru-RU') + ' ₽');
+    }
+}
+document.addEventListener('keydown', e=>{
+    if(e.key==='Escape') closePay();
+});
+
+// ════════════════════ TELEGRAM INIT ════════════════════
+if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+    const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
+    if (tgUser?.photo_url) {
+        document.documentElement.style.setProperty('--ava', `url('${tgUser.photo_url}')`);
+    }
+    if (tgUser?.first_name && !localStorage.getItem('aibot_name')) {
+        document.getElementById('nameInput').value = tgUser.first_name;
+    }
+}
+
+// Show profile screen on first visit (no saved name)
+// In production: check Telegram WebApp initData for user data
+(function() {
+    const savedName = localStorage.getItem('aibot_name');
+    const savedGender = localStorage.getItem('aibot_gender');
+    if (!savedName) {
+        goTo('profile');
+    } else {
+        document.querySelector('.user-name').textContent = savedName;
+        USER_GENDER = savedGender || 'male';
+        pickGender(USER_GENDER);
+        updateRoleImages();
+    }
+})();
+</script>
+</body>
+</html>

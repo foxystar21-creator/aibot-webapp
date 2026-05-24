@@ -144,12 +144,12 @@ body{padding-bottom:24px;}
 }
 .seg-opt{
     flex:1;text-align:center;padding:9px 4px;
-    font-size:12px;font-weight:600;border-radius:10px;
-    cursor:pointer;color:var(--text-2);transition:all .2s;user-select:none;
+    font-size:12px;font-weight:700;border-radius:10px;
+    cursor:pointer;color:var(--text-2);transition:background .2s,color .2s,box-shadow .2s;user-select:none;
     letter-spacing:-.1px;
 }
 .seg-opt.active{
-    background:var(--primary);color:#fff;font-weight:700;
+    background:var(--primary);color:#fff;
     box-shadow:0 4px 12px rgba(75,107,251,.35);
 }
 
@@ -598,9 +598,9 @@ body{padding-bottom:24px;}
                     <div class="seg-opt active" onclick="seg(this)">Нейтральный</div>
                     <div class="seg-opt" onclick="seg(this)">Лаконичный</div>
                 </div>
-                <div class="seg-ctrl" id="main-mode-seg">
-                    <div class="seg-opt active" onclick="setMode('text')">Текст</div>
-                    <div class="seg-opt" onclick="setMode('voice')">Голос</div>
+                <div class="seg-ctrl">
+                    <div class="seg-opt active" onclick="seg(this)">Текст</div>
+                    <div class="seg-opt" onclick="seg(this)">Голос</div>
                 </div>
             </div>
 

@@ -782,6 +782,16 @@ body{padding-bottom:24px;}
                         <div class="sett-val" id="agentNameVal">Саша</div>
                         <div class="sett-arr" id="agentNameArr">›</div>
                     </div>
+                    <div class="sett-row">
+                        <div class="sett-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                        </div>
+                        <div class="sett-lbl">Ответы</div>
+                        <div class="gender-seg" id="mode-seg">
+                            <div class="g-opt active" onclick="modeSeg(this,'text')">Текст</div>
+                            <div class="g-opt" onclick="modeSeg(this,'voice')">Голос</div>
+                        </div>
+                    </div>
                     <div class="sett-row danger" style="cursor:pointer" onclick="restartBot()">
                         <div class="sett-ico">
                             <svg viewBox="0 0 24 24" fill="none" stroke="#E55353" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
@@ -896,6 +906,7 @@ body{padding-bottom:24px;}
 // ════════════════════ USER GENDER & ROLE ════════════════════
 let USER_GENDER  = localStorage.getItem('aibot_gender') || 'male';
 let CURRENT_ROLE = localStorage.getItem('aibot_role')   || 'fitness';
+let CURRENT_MODE = localStorage.getItem('aibot_mode')   || 'text';
 
 // Gender-specific images: male user → female agent, female user → male agent
 const GENDER_IMGS = {
@@ -1004,9 +1015,11 @@ function goTo(id) {
 }
 function closeApp() {
     localStorage.setItem('aibot_role', CURRENT_ROLE);
+    localStorage.setItem('aibot_mode', CURRENT_MODE);
     const payload = JSON.stringify({
         action: 'update_settings',
         role: CURRENT_ROLE,
+        mode: CURRENT_MODE,
     });
     if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.sendData(payload);
@@ -1048,6 +1061,11 @@ function seg(el) {
 function gSeg(el) {
     el.closest('.gender-seg').querySelectorAll('.g-opt').forEach(o => o.classList.remove('active'));
     el.classList.add('active');
+}
+function modeSeg(el, mode) {
+    document.querySelectorAll('#mode-seg .g-opt').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    CURRENT_MODE = mode;
 }
 
 // ════════════════════ ROLE SELECTION ════════════════════
@@ -1175,10 +1193,17 @@ if (window.Telegram?.WebApp) {
 }
 
 // Show profile screen on first visit (no saved name)
-// In production: check Telegram WebApp initData for user data
 (function() {
-    const savedName = localStorage.getItem('aibot_name');
+    const savedName   = localStorage.getItem('aibot_name');
     const savedGender = localStorage.getItem('aibot_gender');
+    const savedMode   = localStorage.getItem('aibot_mode') || 'text';
+
+    // Init mode toggle
+    document.querySelectorAll('#mode-seg .g-opt').forEach(o => o.classList.remove('active'));
+    const modeOpts = document.querySelectorAll('#mode-seg .g-opt');
+    if (savedMode === 'voice') modeOpts[1]?.classList.add('active');
+    else modeOpts[0]?.classList.add('active');
+
     if (!savedName) {
         goTo('profile');
     } else {

@@ -1127,17 +1127,18 @@ function pick(el) {
     });
 })();
 
-// ════════════════════ TIMER ════════════════════
-(function() {
-    const end = Date.now() + (1*86400 + 14*3600 + 32*60 + 7) * 1000;
+// ════════════════════ TIMER (fake, overridden by applyStats if real data available) ════════════════════
+var _fakeTimer = (function() {
+    var end = Date.now() + (1*86400 + 14*3600 + 32*60 + 7) * 1000;
     function tick() {
-        const diff = Math.max(0, Math.floor((end - Date.now()) / 1000));
+        var diff = Math.max(0, Math.floor((end - Date.now()) / 1000));
         document.getElementById('td').textContent = String(Math.floor(diff/86400)).padStart(2,'0');
         document.getElementById('th').textContent = String(Math.floor((diff%86400)/3600)).padStart(2,'0');
         document.getElementById('tm').textContent = String(Math.floor((diff%3600)/60)).padStart(2,'0');
         document.getElementById('ts').textContent = String(diff%60).padStart(2,'0');
     }
-    tick(); setInterval(tick, 1000);
+    tick();
+    return setInterval(tick, 1000);
 })();
 
 // ════════════════════ COPY REFERRAL ════════════════════
@@ -1218,25 +1219,28 @@ const ROLE_NAMES_RU = {
 const BAR_COLORS = ['c1','c2','c3','c4'];
 
 function rebuildChart(data, growth) {
-    const el = document.getElementById('chart');
+    var el = document.getElementById('chart');
+    if (!el) return;
     el.innerHTML = '';
-    const max = Math.max(...data, 1);
-    const today = new Date();
-    data.forEach((v, i) => {
-        const d = new Date(today);
+    var max = Math.max.apply(null, data.concat([1]));
+    var today = new Date();
+    data.forEach(function(v, i) {
+        var d = new Date(today);
         d.setDate(d.getDate() - (13 - i));
-        const col = document.createElement('div'); col.className = 'bar-col';
-        const track = document.createElement('div'); track.className = 'bar-track';
-        const bar = document.createElement('div'); bar.className = 'bar';
+        var col = document.createElement('div'); col.className = 'bar-col';
+        var track = document.createElement('div'); track.className = 'bar-track';
+        var bar = document.createElement('div'); bar.className = 'bar';
         bar.style.height = '0%';
         track.appendChild(bar);
-        const lbl = document.createElement('div'); lbl.className = 'bar-day';
+        var lbl = document.createElement('div'); lbl.className = 'bar-day';
         lbl.textContent = String(d.getDate());
         col.appendChild(track); col.appendChild(lbl);
         el.appendChild(col);
-        setTimeout(() => { bar.style.height = (v / max * 100) + '%'; }, 50 + i * 20);
+        (function(b, val) {
+            setTimeout(function() { b.style.height = (val / max * 100) + '%'; }, 50 + i * 20);
+        })(bar, v);
     });
-    const growthEl = document.getElementById('chart-growth');
+    var growthEl = document.getElementById('chart-growth');
     if (growthEl) growthEl.textContent = (growth >= 0 ? '+' : '') + growth + '%';
 }
 
@@ -1258,15 +1262,16 @@ function rebuildUsage(roles) {
     });
 }
 
-let _subTimer;
+var _subTimer;
 function startSubTimer(isoEnd, subType) {
-    const badge = document.querySelector('.sub-badge');
-    if (badge) badge.textContent = subType === 'trial' ? '🎁 Пробный период' : '✅ Pro подписка';
-    const end = new Date(isoEnd + (isoEnd.endsWith('Z') ? '' : 'Z'));
+    if (_fakeTimer) { clearInterval(_fakeTimer); _fakeTimer = null; }
     if (_subTimer) clearInterval(_subTimer);
+    var badge = document.querySelector('.sub-badge');
+    if (badge) badge.textContent = subType === 'trial' ? '🎁 Пробный период' : '✅ Pro подписка';
+    var end = new Date(isoEnd + (isoEnd.indexOf('Z') === -1 ? 'Z' : ''));
     function tick() {
-        const diff = Math.max(0, Math.floor((end - Date.now()) / 1000));
-        const fmt = n => String(n).padStart(2, '0');
+        var diff = Math.max(0, Math.floor((end - Date.now()) / 1000));
+        function fmt(n) { return String(n).padStart(2, '0'); }
         document.getElementById('td').textContent = fmt(Math.floor(diff / 86400));
         document.getElementById('th').textContent = fmt(Math.floor((diff % 86400) / 3600));
         document.getElementById('tm').textContent = fmt(Math.floor((diff % 3600) / 60));
@@ -1277,31 +1282,25 @@ function startSubTimer(isoEnd, subType) {
 }
 
 function applyStats(s) {
-    let stats;
     try {
-        stats = JSON.parse(atob(s.replace(/-/g, '+').replace(/_/g, '/')));
-    } catch(e) { return; }
-
-    const streakEl = document.getElementById('stat-streak');
-    if (streakEl) streakEl.textContent = stats.d ?? '0';
-
-    const wordsEl = document.getElementById('stat-words');
-    if (wordsEl) wordsEl.textContent = (stats.w || 0).toLocaleString('ru-RU');
-
-    if (stats.ch && stats.ch.length) rebuildChart(stats.ch, stats.gr || 0);
-
-    if (stats.r && stats.r.length) {
-        const fav = stats.r[0];
-        const el = document.getElementById('fav-name');
-        if (el) el.textContent = ROLE_NAMES_RU[fav.id] || fav.id;
-        const pct = document.getElementById('fav-pct');
-        if (pct) pct.textContent = fav.pct + '%';
-        const ava = document.getElementById('fav-ava');
-        if (ava) ava.style.backgroundImage = `url('${getRoleImg(fav.id)}')`;
-        rebuildUsage(stats.r);
-    }
-
-    if (stats.se) startSubTimer(stats.se, stats.st || 'trial');
+        var stats = JSON.parse(atob(s.replace(/-/g, '+').replace(/_/g, '/')));
+        var streakEl = document.getElementById('stat-streak');
+        if (streakEl) streakEl.textContent = stats.d !== undefined ? stats.d : 0;
+        var wordsEl = document.getElementById('stat-words');
+        if (wordsEl) wordsEl.textContent = (stats.w || 0).toLocaleString('ru-RU');
+        if (stats.ch && stats.ch.length) rebuildChart(stats.ch, stats.gr || 0);
+        if (stats.r && stats.r.length) {
+            var fav = stats.r[0];
+            var favNameEl = document.getElementById('fav-name');
+            if (favNameEl) favNameEl.textContent = ROLE_NAMES_RU[fav.id] || fav.id;
+            var favPctEl = document.getElementById('fav-pct');
+            if (favPctEl) favPctEl.textContent = fav.pct + '%';
+            var favAvaEl = document.getElementById('fav-ava');
+            if (favAvaEl) favAvaEl.style.backgroundImage = "url('" + getRoleImg(fav.id) + "')";
+            rebuildUsage(stats.r);
+        }
+        if (stats.se) startSubTimer(stats.se, stats.st || 'trial');
+    } catch(e) { /* ignore stats errors — never break the app */ }
 }
 
 // Show profile screen on first visit (no saved name)

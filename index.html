@@ -679,14 +679,14 @@ body{padding-bottom:24px;}
                 <div class="card-head" style="margin-bottom:0;">
                     <div>
                         <div class="card-title">Любимая роль</div>
-                        <div class="card-sub">по количеству сообщений</div>
+                        <div class="card-sub">с кем ты чаще всего болтаешь</div>
                     </div>
                 </div>
                 <div class="fav-inner">
                     <div id="fav-ava" class="fav-ava" style="background-image:url('roles/bratan.jpg')"></div>
                     <div>
                         <div id="fav-name" class="fav-name">—</div>
-                        <div id="fav-joke" class="fav-joke">по количеству сообщений</div>
+                        <div id="fav-joke" class="fav-joke">твой любимчик 😏</div>
                     </div>
                     <div id="fav-pct" class="fav-pct">—</div>
                 </div>
@@ -1252,6 +1252,20 @@ const ROLE_NAMES_RU = {
     'businessman':'Бизнесмен','lawyer':'Юрист','marketer':'Маркетолог',
     'hater':'Хейтер','sexy':'Секси',
 };
+const ROLE_JOKES = {
+    'friend':      'всегда выслушает и не осудит 💙',
+    'bratan':      'свой в доску, не подведёт 🤜',
+    'fitness':     'заставит тебя попотеть 💪',
+    'secretary':   'держит всё под контролем 📋',
+    'psychologist':'знает тебя лучше тебя самого 🧠',
+    'tutor':       'двоечникам здесь не место ✏️',
+    'nutritionist':'ты то, что ты ешь 🥗',
+    'businessman': 'деньги не спят, и ты не спи 💰',
+    'lawyer':      'без комментариев 👔',
+    'marketer':    'продаст тебе даже воздух 📈',
+    'hater':       'критикует, потому что верит 😤',
+    'sexy':        'температура зашкаливает 🔥',
+};
 const BAR_COLORS = ['c1','c2','c3','c4'];
 
 function rebuildChart(data, growth) {
@@ -1332,6 +1346,8 @@ function applyStats(s) {
             var fav = stats.r[0];
             var favNameEl = document.getElementById('fav-name');
             if (favNameEl) favNameEl.textContent = ROLE_NAMES_RU[fav.id] || fav.id;
+            var favJokeEl = document.getElementById('fav-joke');
+            if (favJokeEl) favJokeEl.textContent = ROLE_JOKES[fav.id] || 'твой любимчик 😏';
             var favPctEl = document.getElementById('fav-pct');
             if (favPctEl) favPctEl.textContent = fav.pct + '%';
             var favAvaEl = document.getElementById('fav-ava');

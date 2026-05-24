@@ -1185,12 +1185,23 @@ document.addEventListener('keydown', e=>{
 });
 
 // ════════════════════ TELEGRAM INIT ════════════════════
+(function() {
+    var h = new Date().getHours();
+    var greetText = h >= 5 && h < 12 ? 'Доброе утро 👋'
+                  : h >= 12 && h < 18 ? 'Добрый день 👋'
+                  : h >= 18 && h < 23 ? 'Добрый вечер 👋'
+                  : 'Доброй ночи 🌙';
+    var greetEl = document.querySelector('.greet');
+    if (greetEl) greetEl.textContent = greetText;
+})();
+
 if (window.Telegram?.WebApp) {
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
-    const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
+    var tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
     if (tgUser?.photo_url) {
-        document.documentElement.style.setProperty('--ava', `url('${tgUser.photo_url}')`);
+        var userPhotoEl = document.querySelector('.user-photo');
+        if (userPhotoEl) userPhotoEl.style.backgroundImage = "url('" + tgUser.photo_url + "')";
     }
     if (tgUser?.first_name && !localStorage.getItem('aibot_name')) {
         document.getElementById('profile-name').value = tgUser.first_name;

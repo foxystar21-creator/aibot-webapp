@@ -64,6 +64,9 @@ body{padding-bottom:24px;}
     background:var(--ava) center/cover;
     box-shadow:0 4px 12px rgba(43,55,98,0.18);
     flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:19px;font-weight:700;color:#fff;font-family:var(--font);
+    background-size:cover;
 }
 .greet{font-size:13px;color:var(--text-2);font-weight:500;letter-spacing:-.1px;}
 .user-name{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-top:1px;}
@@ -1199,9 +1202,21 @@ if (window.Telegram?.WebApp) {
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
     var tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
-    if (tgUser?.photo_url) {
-        var userPhotoEl = document.querySelector('.user-photo');
-        if (userPhotoEl) userPhotoEl.style.backgroundImage = "url('" + tgUser.photo_url + "')";
+    var userPhotoEl = document.querySelector('.user-photo');
+    if (userPhotoEl && tgUser) {
+        if (tgUser.photo_url) {
+            var img = new Image();
+            img.onload = function() {
+                userPhotoEl.style.backgroundImage = "url('" + tgUser.photo_url + "')";
+                userPhotoEl.textContent = '';
+            };
+            img.onerror = function() {
+                userPhotoEl.textContent = (tgUser.first_name || '?').charAt(0).toUpperCase();
+            };
+            img.src = tgUser.photo_url;
+        } else {
+            userPhotoEl.textContent = (tgUser.first_name || '?').charAt(0).toUpperCase();
+        }
     }
     if (tgUser?.first_name && !localStorage.getItem('aibot_name')) {
         document.getElementById('profile-name').value = tgUser.first_name;

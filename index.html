@@ -577,11 +577,11 @@ body{padding-bottom:24px;}
 
             <!-- HERO ROLE -->
             <div class="card hero-role">
-                <div class="hero-photo" style="background-image:url('roles/bratan.jpg')"></div>
+                <div class="hero-photo" style="background-image:url('roles/trener.jpg')"></div>
                 <div class="hero-text">
                     <div class="hero-tag"><span class="dot"></span> Сейчас активна</div>
-                    <div class="hero-name">Братан</div>
-                    <div class="hero-sub">Свой парень, всегда на твоей стороне</div>
+                    <div class="hero-name">Саша</div>
+                    <div class="hero-sub">Фитнес тренер</div>
                     <button class="change-btn" onclick="goTo('roles')">
                         Сменить роль
                         <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -931,12 +931,31 @@ function pickGender(g) {
 function saveProfile() {
     const name = document.getElementById('profile-name').value.trim();
     if (!name) { document.getElementById('profile-name').focus(); return; }
-    document.querySelector('.user-name').textContent = name;
-    document.querySelector('.greet').textContent = 'Добро пожаловать 👋';
+
     localStorage.setItem('aibot_name', name);
     localStorage.setItem('aibot_gender', USER_GENDER);
+
+    document.querySelector('.user-name').textContent = name;
+    document.querySelector('.greet').textContent = 'Добро пожаловать 👋';
     updateRoleImages();
-    goTo('roles');
+
+    const payload = JSON.stringify({
+        action: 'save_profile',
+        name: name,
+        gender: USER_GENDER,
+        role: 'fitness',
+        bot_gender: 'male',
+        voice_name: 'sasha',
+    });
+
+    if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.sendData(payload);
+        // webapp closes automatically after sendData
+    } else {
+        // browser fallback for testing
+        console.log('sendData:', payload);
+        goTo('main');
+    }
 }
 
 // ════════════════════ ROLES DATA ════════════════════

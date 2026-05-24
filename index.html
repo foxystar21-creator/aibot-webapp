@@ -893,8 +893,9 @@ body{padding-bottom:24px;}
 </div>
 
 <script>
-// ════════════════════ USER GENDER ════════════════════
-let USER_GENDER = 'male'; // set from profile screen or Telegram data
+// ════════════════════ USER GENDER & ROLE ════════════════════
+let USER_GENDER  = localStorage.getItem('aibot_gender') || 'male';
+let CURRENT_ROLE = localStorage.getItem('aibot_role')   || 'fitness';
 
 // Gender-specific images: male user → female agent, female user → male agent
 const GENDER_IMGS = {
@@ -960,7 +961,7 @@ function saveProfile() {
 
 // ════════════════════ ROLES DATA ════════════════════
 const ROLES = [
-    {id:'bratan',       name:'Братан / Сеструха', sub:'Свой в доску',              desc:'Поговорить за кружкой пива, излить душу.',                          img:'roles/bratan.jpg', active:true},
+    {id:'bratan',       name:'Братан / Сеструха', sub:'Свой в доску',              desc:'Поговорить за кружкой пива, излить душу.',                          img:'roles/bratan.jpg'},
     {id:'friend',       name:'Друг / Подруга',    sub:'Близкий собеседник',        desc:'Поддержка, советы и разговоры по душам.',                           img:'roles/drug.jpg'},
     {id:'fitness',      name:'Фитнес тренер',     sub:'Мотивировочный движок',     desc:'План тренировок, мотивация, контроль тренировок.',                  img:'roles/trener.jpg'},
     {id:'secretary',    name:'Секретарь',          sub:'Умный помощник',            desc:'Создание текстов, напоминания о делах.',                            img:'roles/sekretar.jpg'},
@@ -976,13 +977,15 @@ const ROLES = [
 
 const grid = document.getElementById('roles-grid');
 ROLES.forEach(r => {
+    const isActive = r.id === CURRENT_ROLE;
     const t = document.createElement('div');
-    t.className = 'role-card' + (r.active ? ' active' : '');
+    t.className = 'role-card' + (isActive ? ' active' : '');
     t.dataset.id = r.id;
-    t.dataset.img = r.img;
-    t.style.backgroundImage = `url('${r.img}')`;
+    const img = getRoleImg(r.id);
+    t.dataset.img = img;
+    t.style.backgroundImage = `url('${img}')`;
     t.innerHTML = `
-        ${r.active ? '<div class="active-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
+        ${isActive ? '<div class="active-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
         <div class="role-card-overlay">
             <div class="role-card-name">${r.name}</div>
             <div class="role-card-sub">${r.sub}</div>
@@ -1000,8 +1003,13 @@ function goTo(id) {
     window.scrollTo(0,0);
 }
 function closeApp() {
+    localStorage.setItem('aibot_role', CURRENT_ROLE);
+    const payload = JSON.stringify({
+        action: 'update_settings',
+        role: CURRENT_ROLE,
+    });
     if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.close();
+        window.Telegram.WebApp.sendData(payload);
     } else {
         window.close();
     }
@@ -1054,6 +1062,7 @@ function pick(el) {
     check.className = 'active-check';
     check.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
     el.appendChild(check);
+    CURRENT_ROLE = el.dataset.id;
 
     // Update hero on main screen
     const name = el.querySelector('.role-card-name').textContent.split(' / ')[0];

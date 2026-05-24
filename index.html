@@ -1217,7 +1217,8 @@ function rebuildChart(data, growth) {
         d.setDate(d.getDate() - (13 - i));
         var col = document.createElement('div'); col.className = 'bar-col';
         var track = document.createElement('div'); track.className = 'bar-track';
-        var bar = document.createElement('div'); bar.className = 'bar';
+        var bar = document.createElement('div');
+        bar.className = 'bar-fill' + (i === data.length - 1 ? ' today' : '');
         bar.style.height = '0%';
         track.appendChild(bar);
         var lbl = document.createElement('div'); lbl.className = 'bar-day';
@@ -1225,7 +1226,9 @@ function rebuildChart(data, growth) {
         col.appendChild(track); col.appendChild(lbl);
         el.appendChild(col);
         (function(b, val) {
-            setTimeout(function() { b.style.height = (val / max * 100) + '%'; }, 50 + i * 20);
+            setTimeout(function() {
+                b.style.height = Math.max(val > 0 ? 8 : 0, Math.round(val / max * 100)) + '%';
+            }, 50 + i * 20);
         })(bar, v);
     });
     var growthEl = document.getElementById('chart-growth');

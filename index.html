@@ -595,9 +595,9 @@ body{padding-bottom:24px;}
                     <div class="seg-opt active" onclick="seg(this)">Нейтральный</div>
                     <div class="seg-opt" onclick="seg(this)">Лаконичный</div>
                 </div>
-                <div class="seg-ctrl">
-                    <div class="seg-opt active" onclick="seg(this)">Текст</div>
-                    <div class="seg-opt" onclick="seg(this)">Голос</div>
+                <div class="seg-ctrl" id="main-mode-seg">
+                    <div class="seg-opt active" onclick="setMode('text')">Текст</div>
+                    <div class="seg-opt" onclick="setMode('voice')">Голос</div>
                 </div>
             </div>
 
@@ -788,8 +788,8 @@ body{padding-bottom:24px;}
                         </div>
                         <div class="sett-lbl">Ответы</div>
                         <div class="gender-seg" id="mode-seg">
-                            <div class="g-opt active" onclick="modeSeg(this,'text')">Текст</div>
-                            <div class="g-opt" onclick="modeSeg(this,'voice')">Голос</div>
+                            <div class="g-opt active" onclick="setMode('text')">Текст</div>
+                            <div class="g-opt" onclick="setMode('voice')">Голос</div>
                         </div>
                     </div>
                     <div class="sett-row danger" style="cursor:pointer" onclick="restartBot()">
@@ -1062,10 +1062,14 @@ function gSeg(el) {
     el.closest('.gender-seg').querySelectorAll('.g-opt').forEach(o => o.classList.remove('active'));
     el.classList.add('active');
 }
-function modeSeg(el, mode) {
-    document.querySelectorAll('#mode-seg .g-opt').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
+function setMode(mode) {
     CURRENT_MODE = mode;
+    const settOpts = document.querySelectorAll('#mode-seg .g-opt');
+    settOpts.forEach(o => o.classList.remove('active'));
+    settOpts[mode === 'voice' ? 1 : 0]?.classList.add('active');
+    const mainOpts = document.querySelectorAll('#main-mode-seg .seg-opt');
+    mainOpts.forEach(o => o.classList.remove('active'));
+    mainOpts[mode === 'voice' ? 1 : 0]?.classList.add('active');
 }
 
 // ════════════════════ ROLE SELECTION ════════════════════
@@ -1198,11 +1202,7 @@ if (window.Telegram?.WebApp) {
     const savedGender = localStorage.getItem('aibot_gender');
     const savedMode   = localStorage.getItem('aibot_mode') || 'text';
 
-    // Init mode toggle
-    document.querySelectorAll('#mode-seg .g-opt').forEach(o => o.classList.remove('active'));
-    const modeOpts = document.querySelectorAll('#mode-seg .g-opt');
-    if (savedMode === 'voice') modeOpts[1]?.classList.add('active');
-    else modeOpts[0]?.classList.add('active');
+    setMode(savedMode);
 
     if (!savedName) {
         goTo('profile');

@@ -764,16 +764,6 @@ body{padding-bottom:24px;}
             <div style="margin-top:8px;">
                 <div class="section-label">Настройки агента</div>
                 <div class="sett-card">
-                    <div class="sett-row">
-                        <div class="sett-ico">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 10-16 0"/></svg>
-                        </div>
-                        <div class="sett-lbl">Пол агента</div>
-                        <div class="gender-seg">
-                            <div class="g-opt active" onclick="gSeg(this)">Муж</div>
-                            <div class="g-opt" onclick="gSeg(this)">Жен</div>
-                        </div>
-                    </div>
                     <div class="sett-row" style="cursor:pointer" onclick="editAgentName(this)">
                         <div class="sett-ico">
                             <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
@@ -972,18 +962,18 @@ function saveProfile() {
 
 // ════════════════════ ROLES DATA ════════════════════
 const ROLES = [
-    {id:'bratan',       name:'Братан / Сеструха', sub:'Свой в доску',              desc:'Поговорить за кружкой пива, излить душу.',                          img:'roles/bratan.jpg'},
-    {id:'friend',       name:'Друг / Подруга',    sub:'Близкий собеседник',        desc:'Поддержка, советы и разговоры по душам.',                           img:'roles/drug.jpg'},
-    {id:'fitness',      name:'Фитнес тренер',     sub:'Мотивировочный движок',     desc:'План тренировок, мотивация, контроль тренировок.',                  img:'roles/trener.jpg'},
-    {id:'secretary',    name:'Секретарь',          sub:'Умный помощник',            desc:'Создание текстов, напоминания о делах.',                            img:'roles/sekretar.jpg'},
-    {id:'psychologist', name:'Психолог',           sub:'Участливый собеседник',     desc:'Разбор ситуаций, помощь в жизненных обстоятельствах.',              img:'roles/psiholog.jpg'},
-    {id:'tutor',        name:'Репетитор',          sub:'Внимательный учитель',      desc:'План учёбы, ежедневные уроки, проверка знаний.',                    img:'roles/repetitor.jpg'},
-    {id:'nutritionist', name:'Нутрициолог',        sub:'Эксперт по питанию',        desc:'Составление диеты, контроль калорий.',                              img:'roles/nutriciolog.jpg'},
-    {id:'businessman',  name:'Бизнесмен',          sub:'Только факты и цифры',      desc:'Всё о бизнесе и деньгах.',                                          img:'roles/businessman.jpg'},
-    {id:'lawyer',       name:'Юрист',              sub:'Беспристрастный профессионал', desc:'Объяснение сложных документов простыми словами.',               img:'roles/urist.jpg'},
-    {id:'marketer',     name:'Маркетолог',         sub:'Креативный тип',            desc:'Идеи для постов, помощь в настройке рекламы.',                     img:'roles/marketolog.jpg'},
-    {id:'hater',        name:'Хейтер',             sub:'Жёсткий критик',            desc:'Говорит то, что другие постесняются.',                              img:'roles/heyter.jpg'},
-    {id:'sexy',         name:'Секси',              sub:'Эротическая фантазия',      desc:'Горячие разговоры, запретные переписки.',                           img:'roles/sexyf.jpg'},
+    {id:'bratan',       bot_gender:null,     name:'Братан / Сеструха', sub:'Свой в доску',              desc:'Поговорить за кружкой пива, излить душу.',                          img:'roles/bratan.jpg'},
+    {id:'friend',       bot_gender:null,     name:'Друг / Подруга',    sub:'Близкий собеседник',        desc:'Поддержка, советы и разговоры по душам.',                           img:'roles/drug.jpg'},
+    {id:'fitness',      bot_gender:'male',   name:'Фитнес тренер',     sub:'Мотивировочный движок',     desc:'План тренировок, мотивация, контроль тренировок.',                  img:'roles/trener.jpg'},
+    {id:'secretary',    bot_gender:'female', name:'Секретарь',          sub:'Умный помощник',            desc:'Создание текстов, напоминания о делах.',                            img:'roles/sekretar.jpg'},
+    {id:'psychologist', bot_gender:'female', name:'Психолог',           sub:'Участливый собеседник',     desc:'Разбор ситуаций, помощь в жизненных обстоятельствах.',              img:'roles/psiholog.jpg'},
+    {id:'tutor',        bot_gender:'female', name:'Репетитор',          sub:'Внимательный учитель',      desc:'План учёбы, ежедневные уроки, проверка знаний.',                    img:'roles/repetitor.jpg'},
+    {id:'nutritionist', bot_gender:'male',   name:'Нутрициолог',        sub:'Эксперт по питанию',        desc:'Составление диеты, контроль калорий.',                              img:'roles/nutriciolog.jpg'},
+    {id:'businessman',  bot_gender:'male',   name:'Бизнесмен',          sub:'Только факты и цифры',      desc:'Всё о бизнесе и деньгах.',                                          img:'roles/businessman.jpg'},
+    {id:'lawyer',       bot_gender:'male',   name:'Юрист',              sub:'Беспристрастный профессионал', desc:'Объяснение сложных документов простыми словами.',               img:'roles/urist.jpg'},
+    {id:'marketer',     bot_gender:'female', name:'Маркетолог',         sub:'Креативный тип',            desc:'Идеи для постов, помощь в настройке рекламы.',                     img:'roles/marketolog.jpg'},
+    {id:'hater',        bot_gender:'male',   name:'Хейтер',             sub:'Жёсткий критик',            desc:'Говорит то, что другие постесняются.',                              img:'roles/heyter.jpg'},
+    {id:'sexy',         bot_gender:null,     name:'Секси',              sub:'Эротическая фантазия',      desc:'Горячие разговоры, запретные переписки.',                           img:'roles/sexyf.jpg'},
 ];
 
 const grid = document.getElementById('roles-grid');
@@ -1013,6 +1003,12 @@ function goTo(id) {
     document.getElementById(id).classList.add('active');
     window.scrollTo(0,0);
 }
+function getBotGender(roleId) {
+    const role = ROLES.find(r => r.id === roleId);
+    if (role?.bot_gender) return role.bot_gender;
+    if (roleId === 'sexy') return USER_GENDER === 'male' ? 'female' : 'male';
+    return USER_GENDER; // bratan, friend — тот же пол что у пользователя
+}
 function closeApp() {
     localStorage.setItem('aibot_role', CURRENT_ROLE);
     localStorage.setItem('aibot_mode', CURRENT_MODE);
@@ -1020,6 +1016,7 @@ function closeApp() {
         action: 'update_settings',
         role: CURRENT_ROLE,
         mode: CURRENT_MODE,
+        bot_gender: getBotGender(CURRENT_ROLE),
     });
     if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.sendData(payload);

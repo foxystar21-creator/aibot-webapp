@@ -594,13 +594,19 @@ body{padding-bottom:24px;}
 
             <!-- TOGGLES -->
             <div class="toggles">
-                <div class="seg-ctrl">
-                    <div class="seg-opt active" onclick="seg(this)">Нейтральный</div>
-                    <div class="seg-opt" onclick="seg(this)">Лаконичный</div>
+                <div>
+                    <div class="card-sub" style="margin-bottom:8px;">Стиль ответов</div>
+                    <div class="seg-ctrl">
+                        <div class="seg-opt active" onclick="seg(this)">Нейтральный</div>
+                        <div class="seg-opt" onclick="seg(this)">Лаконичный</div>
+                    </div>
                 </div>
-                <div class="seg-ctrl" id="main-mode-seg">
-                    <div class="seg-opt active" onclick="setMode('text')">Текст</div>
-                    <div class="seg-opt" onclick="setMode('voice')">Голос</div>
+                <div>
+                    <div class="card-sub" style="margin-bottom:8px;">Способ ответов</div>
+                    <div class="seg-ctrl" id="main-mode-seg">
+                        <div class="seg-opt active" onclick="setMode('text')">Текст</div>
+                        <div class="seg-opt" onclick="setMode('voice')">Голос</div>
+                    </div>
                 </div>
             </div>
 

@@ -1155,6 +1155,12 @@ function copyRef() {
 }
 
 function restartBot() {
+    localStorage.removeItem('aibot_name');
+    localStorage.removeItem('aibot_gender');
+    localStorage.removeItem('aibot_role');
+    localStorage.removeItem('aibot_mode');
+    document.getElementById('profile-name').value = '';
+    pickGender('male');
     goTo('profile');
 }
 

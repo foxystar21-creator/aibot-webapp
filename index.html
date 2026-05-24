@@ -557,7 +557,23 @@ body{padding-bottom:24px;}
 
 </style>
 </head>
-<body>
+<body style="opacity:0;">
+<script>
+(function(){
+    var tg = window.Telegram && window.Telegram.WebApp;
+    if (!tg || !tg.initData) {
+        document.body.style.opacity = '1';
+        document.body.style.background = '#11162B';
+        document.body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#fff;text-align:center;padding:32px;">'
+            + '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>'
+            + '<div style="font-size:20px;font-weight:700;letter-spacing:-.3px;">Доступ только из Telegram</div>'
+            + '<div style="font-size:14px;color:#9CA3B8;max-width:260px;line-height:1.5;">Это приложение работает только внутри Telegram. Открой его через бота.</div>'
+            + '</div>';
+        return;
+    }
+    document.body.style.opacity = '1';
+})();
+</script>
 
 <!-- ════════════════════ MAIN SCREEN ════════════════════ -->
 <div class="screen active" id="main">

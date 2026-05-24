@@ -909,6 +909,15 @@ function getRoleImg(id) {
     const r = ROLES.find(x => x.id === id);
     return r ? r.img : '';
 }
+function updateHero() {
+    const role = ROLES.find(r => r.id === CURRENT_ROLE);
+    if (!role) return;
+    document.querySelector('.hero-name').textContent = role.name.split(' / ')[0];
+    const heroSub = document.querySelector('.hero-sub');
+    if (heroSub) heroSub.textContent = role.sub;
+    const heroPhoto = document.querySelector('.hero-photo');
+    if (heroPhoto) heroPhoto.style.backgroundImage = `url('${getRoleImg(CURRENT_ROLE)}')`;
+}
 function updateRoleImages() {
     document.querySelectorAll('.role-card[data-id]').forEach(card => {
         const img = getRoleImg(card.dataset.id);
@@ -1208,6 +1217,7 @@ if (window.Telegram?.WebApp) {
         USER_GENDER = savedGender || 'male';
         pickGender(USER_GENDER);
         updateRoleImages();
+        updateHero();
     }
 })();
 </script>

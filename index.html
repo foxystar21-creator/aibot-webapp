@@ -1120,28 +1120,6 @@ function pick(el) {
     }
 }
 
-// ════════════════════ CHART ════════════════════
-(function() {
-    const data = [8,14,6,22,18,30,12,40,28,19,35,42,38,55];
-    const days = ['10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
-    const max = Math.max(...data);
-    const el = document.getElementById('chart');
-    data.forEach((v, i) => {
-        const col = document.createElement('div'); col.className = 'bar-col';
-        const track = document.createElement('div'); track.className = 'bar-track';
-        const bar = document.createElement('div');
-        bar.className = 'bar-fill' + (i === data.length-1 ? ' today' : '');
-        bar.style.height = '0%';
-        track.appendChild(bar);
-        const lbl = document.createElement('div'); lbl.className = 'bar-day'; lbl.textContent = days[i];
-        col.appendChild(track); col.appendChild(lbl);
-        el.appendChild(col);
-        setTimeout(() => {
-            bar.style.height = Math.max(8, Math.round((v/max)*100)) + '%';
-        }, 80 + i*40);
-    });
-})();
-
 var _fakeTimer = null; // будет заменён реальным таймером из applyStats
 
 // ════════════════════ COPY REFERRAL ════════════════════

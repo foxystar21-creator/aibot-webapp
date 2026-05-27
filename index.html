@@ -64,9 +64,6 @@ body{padding-bottom:24px;}
     background:var(--ava) center/cover;
     box-shadow:0 4px 12px rgba(43,55,98,0.18);
     flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-    font-size:19px;font-weight:700;color:#fff;font-family:var(--font);
-    background-size:cover;
 }
 .greet{font-size:13px;color:var(--text-2);font-weight:500;letter-spacing:-.1px;}
 .user-name{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-top:1px;}
@@ -144,12 +141,12 @@ body{padding-bottom:24px;}
 }
 .seg-opt{
     flex:1;text-align:center;padding:9px 4px;
-    font-size:12px;font-weight:700;border-radius:10px;
-    cursor:pointer;color:var(--text-2);transition:background .2s,color .2s,box-shadow .2s;user-select:none;
+    font-size:12px;font-weight:600;border-radius:10px;
+    cursor:pointer;color:var(--text-2);transition:all .2s;user-select:none;
     letter-spacing:-.1px;
 }
 .seg-opt.active{
-    background:var(--primary);color:#fff;
+    background:var(--primary);color:#fff;font-weight:700;
     box-shadow:0 4px 12px rgba(75,107,251,.35);
 }
 
@@ -557,23 +554,7 @@ body{padding-bottom:24px;}
 
 </style>
 </head>
-<body style="opacity:0;">
-<script>
-(function(){
-    var tg = window.Telegram && window.Telegram.WebApp;
-    if (!tg || tg.platform === 'unknown' || tg.platform === '' || tg.platform === undefined) {
-        document.body.style.opacity = '1';
-        document.body.style.background = '#11162B';
-        document.body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#fff;text-align:center;padding:32px;">'
-            + '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>'
-            + '<div style="font-size:20px;font-weight:700;letter-spacing:-.3px;">Доступ только из Telegram</div>'
-            + '<div style="font-size:14px;color:#9CA3B8;max-width:260px;line-height:1.5;">Это приложение работает только внутри Telegram. Открой его через бота.</div>'
-            + '</div>';
-        return;
-    }
-    document.body.style.opacity = '1';
-})();
-</script>
+<body>
 
 <!-- ════════════════════ MAIN SCREEN ════════════════════ -->
 <div class="screen active" id="main">
@@ -596,11 +577,11 @@ body{padding-bottom:24px;}
 
             <!-- HERO ROLE -->
             <div class="card hero-role">
-                <div class="hero-photo" style="background-image:url('roles/trener.jpg')"></div>
+                <div class="hero-photo" style="background-image:url('roles/bratan.jpg')"></div>
                 <div class="hero-text">
                     <div class="hero-tag"><span class="dot"></span> Сейчас активна</div>
-                    <div class="hero-name">Саша</div>
-                    <div class="hero-sub">Фитнес тренер</div>
+                    <div class="hero-name">Братан</div>
+                    <div class="hero-sub">Свой парень, всегда на твоей стороне</div>
                     <button class="change-btn" onclick="goTo('roles')">
                         Сменить роль
                         <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -609,20 +590,14 @@ body{padding-bottom:24px;}
             </div>
 
             <!-- TOGGLES -->
-            <div style="margin-top:14px;">
-                <div style="display:flex;gap:8px;margin-bottom:6px;">
-                    <div style="flex:1;" class="card-sub">Стиль ответов</div>
-                    <div style="flex:1;" class="card-sub">Способ ответов</div>
+            <div class="toggles">
+                <div class="seg-ctrl">
+                    <div class="seg-opt active" onclick="seg(this)">Нейтральный</div>
+                    <div class="seg-opt" onclick="seg(this)">Лаконичный</div>
                 </div>
-                <div class="toggles" style="margin-top:0;">
-                    <div class="seg-ctrl">
-                        <div class="seg-opt active" onclick="seg(this)">Нейтральный</div>
-                        <div class="seg-opt" onclick="seg(this)">Лаконичный</div>
-                    </div>
-                    <div class="seg-ctrl">
-                        <div class="seg-opt active" onclick="seg(this)">Текст</div>
-                        <div class="seg-opt" onclick="seg(this)">Голос</div>
-                    </div>
+                <div class="seg-ctrl">
+                    <div class="seg-opt active" onclick="seg(this)">Текст</div>
+                    <div class="seg-opt" onclick="seg(this)">Голос</div>
                 </div>
             </div>
 
@@ -636,7 +611,7 @@ body{padding-bottom:24px;}
                             <path fill="#FFD27A" opacity="0.75" d="M16 14c.6 2.2 2.5 3 2.5 5.2A2.5 2.5 0 0 1 13 19.5c0-1.4 1-2 1.6-3 .1 1.4 1 1.6 1.4.6.3-1-.5-1.6-.5-2.6 0-.6.5-1.1 1.5-1.5z"/>
                         </svg>
                     </div>
-                    <div class="stat-val" id="stat-streak">—</div>
+                    <div class="stat-val">12</div>
                     <div class="stat-lbl">Дней подряд</div>
                 </div>
                 <div class="stat-tile peach">
@@ -649,7 +624,7 @@ body{padding-bottom:24px;}
                             <circle cx="20" cy="11.5" r="1.6" fill="#fff"/>
                         </svg>
                     </div>
-                    <div class="stat-val" id="stat-words">—</div>
+                    <div class="stat-val">4 821</div>
                     <div class="stat-lbl">Слов написано</div>
                 </div>
             </div>
@@ -666,7 +641,7 @@ body{padding-bottom:24px;}
                             <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                         </div>
                         <div>
-                            <div class="pill-num" id="chart-growth">—</div>
+                            <div class="pill-num">+12%</div>
                             <div class="pill-lbl">за неделю</div>
                         </div>
                     </div>
@@ -679,16 +654,16 @@ body{padding-bottom:24px;}
                 <div class="card-head" style="margin-bottom:0;">
                     <div>
                         <div class="card-title">Любимая роль</div>
-                        <div class="card-sub">с кем ты чаще всего болтаешь</div>
+                        <div class="card-sub">по количеству сообщений</div>
                     </div>
                 </div>
                 <div class="fav-inner">
-                    <div id="fav-ava" class="fav-ava" style="background-image:url('roles/bratan.jpg')"></div>
+                    <div class="fav-ava" style="background-image:url('roles/bratan.jpg')"></div>
                     <div>
-                        <div id="fav-name" class="fav-name">—</div>
-                        <div id="fav-joke" class="fav-joke">твой любимчик 😏</div>
+                        <div class="fav-name">Братан</div>
+                        <div class="fav-joke">Не можешь без него 😄</div>
                     </div>
-                    <div id="fav-pct" class="fav-pct">—</div>
+                    <div class="fav-pct">42%</div>
                 </div>
             </div>
 
@@ -700,7 +675,7 @@ body{padding-bottom:24px;}
                         <div class="card-sub">% от всех сообщений</div>
                     </div>
                 </div>
-                <div class="usage-list" id="usage-list">
+                <div class="usage-list">
                     <div class="usage-row">
                         <div class="u-ava" data-role="friend" style="background-image:url('roles/drug.jpg')"></div>
                         <div class="u-info">
@@ -787,7 +762,26 @@ body{padding-bottom:24px;}
             </div>
 
             <div style="margin-top:8px;">
+                <div class="section-label">Настройки агента</div>
                 <div class="sett-card">
+                    <div class="sett-row">
+                        <div class="sett-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+                        </div>
+                        <div class="sett-lbl">Пол агента</div>
+                        <div class="gender-seg">
+                            <div class="g-opt active" onclick="gSeg(this)">Муж</div>
+                            <div class="g-opt" onclick="gSeg(this)">Жен</div>
+                        </div>
+                    </div>
+                    <div class="sett-row" style="cursor:pointer" onclick="editAgentName(this)">
+                        <div class="sett-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#4B6BFB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+                        </div>
+                        <div class="sett-lbl">Имя агента</div>
+                        <div class="sett-val" id="agentNameVal">Саша</div>
+                        <div class="sett-arr" id="agentNameArr">›</div>
+                    </div>
                     <div class="sett-row danger" style="cursor:pointer" onclick="restartBot()">
                         <div class="sett-ico">
                             <svg viewBox="0 0 24 24" fill="none" stroke="#E55353" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
@@ -911,10 +905,8 @@ body{padding-bottom:24px;}
 </div>
 
 <script>
-// ════════════════════ USER GENDER & ROLE ════════════════════
-let USER_GENDER  = localStorage.getItem('aibot_gender') || 'male';
-let CURRENT_ROLE = localStorage.getItem('aibot_role')   || 'fitness';
-let CURRENT_MODE = localStorage.getItem('aibot_mode')   || 'text';
+// ════════════════════ USER GENDER ════════════════════
+let USER_GENDER = 'male'; // set from profile screen or Telegram data
 
 // Gender-specific images: male user → female agent, female user → male agent
 const GENDER_IMGS = {
@@ -926,15 +918,6 @@ function getRoleImg(id) {
     if (GENDER_IMGS[id]) return GENDER_IMGS[id][USER_GENDER];
     const r = ROLES.find(x => x.id === id);
     return r ? r.img : '';
-}
-function updateHero() {
-    const role = ROLES.find(r => r.id === CURRENT_ROLE);
-    if (!role) return;
-    document.querySelector('.hero-name').textContent = role.name.split(' / ')[0];
-    const heroSub = document.querySelector('.hero-sub');
-    if (heroSub) heroSub.textContent = role.sub;
-    const heroPhoto = document.querySelector('.hero-photo');
-    if (heroPhoto) heroPhoto.style.backgroundImage = `url('${getRoleImg(CURRENT_ROLE)}')`;
 }
 function updateRoleImages() {
     document.querySelectorAll('.role-card[data-id]').forEach(card => {
@@ -960,60 +943,39 @@ function pickGender(g) {
 function saveProfile() {
     const name = document.getElementById('profile-name').value.trim();
     if (!name) { document.getElementById('profile-name').focus(); return; }
-
-    localStorage.setItem('aibot_name', name);
-    localStorage.setItem('aibot_gender', USER_GENDER);
-
     document.querySelector('.user-name').textContent = name;
     document.querySelector('.greet').textContent = 'Добро пожаловать 👋';
+    localStorage.setItem('aibot_name', name);
+    localStorage.setItem('aibot_gender', USER_GENDER);
     updateRoleImages();
-
-    const payload = JSON.stringify({
-        action: 'save_profile',
-        name: name,
-        gender: USER_GENDER,
-        role: 'fitness',
-        bot_gender: 'male',
-        voice_name: 'sasha',
-    });
-
-    if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.sendData(payload);
-        // webapp closes automatically after sendData
-    } else {
-        // browser fallback for testing
-        console.log('sendData:', payload);
-        goTo('main');
-    }
+    goTo('roles');
 }
 
 // ════════════════════ ROLES DATA ════════════════════
 const ROLES = [
-    {id:'bratan',       bot_gender:null,     name:'Братан / Сеструха', sub:'Свой в доску',              desc:'Поговорить за кружкой пива, излить душу.',                          img:'roles/bratan.jpg'},
-    {id:'friend',       bot_gender:null,     name:'Друг / Подруга',    sub:'Близкий собеседник',        desc:'Поддержка, советы и разговоры по душам.',                           img:'roles/drug.jpg'},
-    {id:'fitness',      bot_gender:'male',   name:'Фитнес тренер',     sub:'Мотивировочный движок',     desc:'План тренировок, мотивация, контроль тренировок.',                  img:'roles/trener.jpg'},
-    {id:'secretary',    bot_gender:'female', name:'Секретарь',          sub:'Умный помощник',            desc:'Создание текстов, напоминания о делах.',                            img:'roles/sekretar.jpg'},
-    {id:'psychologist', bot_gender:'female', name:'Психолог',           sub:'Участливый собеседник',     desc:'Разбор ситуаций, помощь в жизненных обстоятельствах.',              img:'roles/psiholog.jpg'},
-    {id:'tutor',        bot_gender:'female', name:'Репетитор',          sub:'Внимательный учитель',      desc:'План учёбы, ежедневные уроки, проверка знаний.',                    img:'roles/repetitor.jpg'},
-    {id:'nutritionist', bot_gender:'male',   name:'Нутрициолог',        sub:'Эксперт по питанию',        desc:'Составление диеты, контроль калорий.',                              img:'roles/nutriciolog.jpg'},
-    {id:'businessman',  bot_gender:'male',   name:'Бизнесмен',          sub:'Только факты и цифры',      desc:'Всё о бизнесе и деньгах.',                                          img:'roles/businessman.jpg'},
-    {id:'lawyer',       bot_gender:'male',   name:'Юрист',              sub:'Беспристрастный профессионал', desc:'Объяснение сложных документов простыми словами.',               img:'roles/urist.jpg'},
-    {id:'marketer',     bot_gender:'female', name:'Маркетолог',         sub:'Креативный тип',            desc:'Идеи для постов, помощь в настройке рекламы.',                     img:'roles/marketolog.jpg'},
-    {id:'hater',        bot_gender:'male',   name:'Хейтер',             sub:'Жёсткий критик',            desc:'Говорит то, что другие постесняются.',                              img:'roles/heyter.jpg'},
-    {id:'sexy',         bot_gender:null,     name:'Секси',              sub:'Эротическая фантазия',      desc:'Горячие разговоры, запретные переписки.',                           img:'roles/sexyf.jpg'},
+    {id:'bratan',       name:'Братан / Сеструха', sub:'Свой в доску',              desc:'Поговорить за кружкой пива, излить душу.',                          img:'roles/bratan.jpg', active:true},
+    {id:'friend',       name:'Друг / Подруга',    sub:'Близкий собеседник',        desc:'Поддержка, советы и разговоры по душам.',                           img:'roles/drug.jpg'},
+    {id:'fitness',      name:'Фитнес тренер',     sub:'Мотивировочный движок',     desc:'План тренировок, мотивация, контроль тренировок.',                  img:'roles/trener.jpg'},
+    {id:'secretary',    name:'Секретарь',          sub:'Умный помощник',            desc:'Создание текстов, напоминания о делах.',                            img:'roles/sekretar.jpg'},
+    {id:'psychologist', name:'Психолог',           sub:'Участливый собеседник',     desc:'Разбор ситуаций, помощь в жизненных обстоятельствах.',              img:'roles/psiholog.jpg'},
+    {id:'tutor',        name:'Репетитор',          sub:'Внимательный учитель',      desc:'План учёбы, ежедневные уроки, проверка знаний.',                    img:'roles/repetitor.jpg'},
+    {id:'nutritionist', name:'Нутрициолог',        sub:'Эксперт по питанию',        desc:'Составление диеты, контроль калорий.',                              img:'roles/nutriciolog.jpg'},
+    {id:'businessman',  name:'Бизнесмен',          sub:'Только факты и цифры',      desc:'Всё о бизнесе и деньгах.',                                          img:'roles/businessman.jpg'},
+    {id:'lawyer',       name:'Юрист',              sub:'Беспристрастный профессионал', desc:'Объяснение сложных документов простыми словами.',               img:'roles/urist.jpg'},
+    {id:'marketer',     name:'Маркетолог',         sub:'Креативный тип',            desc:'Идеи для постов, помощь в настройке рекламы.',                     img:'roles/marketolog.jpg'},
+    {id:'hater',        name:'Хейтер',             sub:'Жёсткий критик',            desc:'Говорит то, что другие постесняются.',                              img:'roles/heyter.jpg'},
+    {id:'sexy',         name:'Секси',              sub:'Эротическая фантазия',      desc:'Горячие разговоры, запретные переписки.',                           img:'roles/sexyf.jpg'},
 ];
 
 const grid = document.getElementById('roles-grid');
 ROLES.forEach(r => {
-    const isActive = r.id === CURRENT_ROLE;
     const t = document.createElement('div');
-    t.className = 'role-card' + (isActive ? ' active' : '');
+    t.className = 'role-card' + (r.active ? ' active' : '');
     t.dataset.id = r.id;
-    const img = getRoleImg(r.id);
-    t.dataset.img = img;
-    t.style.backgroundImage = `url('${img}')`;
+    t.dataset.img = r.img;
+    t.style.backgroundImage = `url('${r.img}')`;
     t.innerHTML = `
-        ${isActive ? '<div class="active-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
+        ${r.active ? '<div class="active-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
         <div class="role-card-overlay">
             <div class="role-card-name">${r.name}</div>
             <div class="role-card-sub">${r.sub}</div>
@@ -1030,23 +992,9 @@ function goTo(id) {
     document.getElementById(id).classList.add('active');
     window.scrollTo(0,0);
 }
-function getBotGender(roleId) {
-    const role = ROLES.find(r => r.id === roleId);
-    if (role?.bot_gender) return role.bot_gender;
-    if (roleId === 'sexy') return USER_GENDER === 'male' ? 'female' : 'male';
-    return USER_GENDER; // bratan, friend — тот же пол что у пользователя
-}
 function closeApp() {
-    localStorage.setItem('aibot_role', CURRENT_ROLE);
-    localStorage.setItem('aibot_mode', CURRENT_MODE);
-    const payload = JSON.stringify({
-        action: 'update_settings',
-        role: CURRENT_ROLE,
-        mode: CURRENT_MODE,
-        bot_gender: getBotGender(CURRENT_ROLE),
-    });
     if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.sendData(payload);
+        window.Telegram.WebApp.close();
     } else {
         window.close();
     }
@@ -1086,12 +1034,6 @@ function gSeg(el) {
     el.closest('.gender-seg').querySelectorAll('.g-opt').forEach(o => o.classList.remove('active'));
     el.classList.add('active');
 }
-function setMode(mode) {
-    CURRENT_MODE = mode;
-    const mainOpts = document.querySelectorAll('#main-mode-seg .seg-opt');
-    mainOpts.forEach(o => o.classList.remove('active'));
-    mainOpts[mode === 'voice' ? 1 : 0]?.classList.add('active');
-}
 
 // ════════════════════ ROLE SELECTION ════════════════════
 function pick(el) {
@@ -1105,7 +1047,6 @@ function pick(el) {
     check.className = 'active-check';
     check.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
     el.appendChild(check);
-    CURRENT_ROLE = el.dataset.id;
 
     // Update hero on main screen
     const name = el.querySelector('.role-card-name').textContent.split(' / ')[0];
@@ -1142,7 +1083,18 @@ function pick(el) {
     });
 })();
 
-var _fakeTimer = null; // будет заменён реальным таймером из applyStats
+// ════════════════════ TIMER ════════════════════
+(function() {
+    const end = Date.now() + (1*86400 + 14*3600 + 32*60 + 7) * 1000;
+    function tick() {
+        const diff = Math.max(0, Math.floor((end - Date.now()) / 1000));
+        document.getElementById('td').textContent = String(Math.floor(diff/86400)).padStart(2,'0');
+        document.getElementById('th').textContent = String(Math.floor((diff%86400)/3600)).padStart(2,'0');
+        document.getElementById('tm').textContent = String(Math.floor((diff%3600)/60)).padStart(2,'0');
+        document.getElementById('ts').textContent = String(diff%60).padStart(2,'0');
+    }
+    tick(); setInterval(tick, 1000);
+})();
 
 // ════════════════════ COPY REFERRAL ════════════════════
 function copyRef() {
@@ -1159,12 +1111,6 @@ function copyRef() {
 }
 
 function restartBot() {
-    localStorage.removeItem('aibot_name');
-    localStorage.removeItem('aibot_gender');
-    localStorage.removeItem('aibot_role');
-    localStorage.removeItem('aibot_mode');
-    document.getElementById('profile-name').value = '';
-    pickGender('male');
     goTo('profile');
 }
 
@@ -1201,162 +1147,23 @@ document.addEventListener('keydown', e=>{
 });
 
 // ════════════════════ TELEGRAM INIT ════════════════════
-(function() {
-    var h = new Date().getHours();
-    var greetText = h >= 5 && h < 12 ? 'Доброе утро 👋'
-                  : h >= 12 && h < 18 ? 'Добрый день 👋'
-                  : h >= 18 && h < 23 ? 'Добрый вечер 👋'
-                  : 'Доброй ночи 🌙';
-    var greetEl = document.querySelector('.greet');
-    if (greetEl) greetEl.textContent = greetText;
-})();
-
 if (window.Telegram?.WebApp) {
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
-    var tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
-    var userPhotoEl = document.querySelector('.user-photo');
-    if (userPhotoEl && tgUser) {
-        if (tgUser.photo_url) {
-            var img = new Image();
-            img.onload = function() {
-                userPhotoEl.style.backgroundImage = "url('" + tgUser.photo_url + "')";
-                userPhotoEl.textContent = '';
-            };
-            img.onerror = function() {
-                userPhotoEl.textContent = (tgUser.first_name || '?').charAt(0).toUpperCase();
-            };
-            img.src = tgUser.photo_url;
-        } else {
-            userPhotoEl.textContent = (tgUser.first_name || '?').charAt(0).toUpperCase();
-        }
+    const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
+    if (tgUser?.photo_url) {
+        document.documentElement.style.setProperty('--ava', `url('${tgUser.photo_url}')`);
     }
     if (tgUser?.first_name && !localStorage.getItem('aibot_name')) {
-        document.getElementById('profile-name').value = tgUser.first_name;
+        document.getElementById('nameInput').value = tgUser.first_name;
     }
-}
-
-// ════════════════════ STATS ════════════════════
-const ROLE_NAMES_RU = {
-    'friend':'Друг','bratan':'Братан','fitness':'Тренер','secretary':'Секретарь',
-    'psychologist':'Психолог','tutor':'Репетитор','nutritionist':'Нутрициолог',
-    'businessman':'Бизнесмен','lawyer':'Юрист','marketer':'Маркетолог',
-    'hater':'Хейтер','sexy':'Секси',
-};
-const ROLE_JOKES = {
-    'friend':      'всегда выслушает и не осудит 💙',
-    'bratan':      'свой в доску, не подведёт 🤜',
-    'fitness':     'заставит тебя попотеть 💪',
-    'secretary':   'держит всё под контролем 📋',
-    'psychologist':'знает тебя лучше тебя самого 🧠',
-    'tutor':       'двоечникам здесь не место ✏️',
-    'nutritionist':'ты то, что ты ешь 🥗',
-    'businessman': 'деньги не спят, и ты не спи 💰',
-    'lawyer':      'без комментариев 👔',
-    'marketer':    'продаст тебе даже воздух 📈',
-    'hater':       'критикует, потому что верит 😤',
-    'sexy':        'температура зашкаливает 🔥',
-};
-const BAR_COLORS = ['c1','c2','c3','c4'];
-
-function rebuildChart(data, growth) {
-    var el = document.getElementById('chart');
-    if (!el) return;
-    el.innerHTML = '';
-    var max = Math.max.apply(null, data.concat([1]));
-    var today = new Date();
-    data.forEach(function(v, i) {
-        var d = new Date(today);
-        d.setDate(d.getDate() - (13 - i));
-        var col = document.createElement('div'); col.className = 'bar-col';
-        var track = document.createElement('div'); track.className = 'bar-track';
-        var bar = document.createElement('div');
-        bar.className = 'bar-fill' + (i === data.length - 1 ? ' today' : '');
-        bar.style.height = '0%';
-        track.appendChild(bar);
-        var lbl = document.createElement('div'); lbl.className = 'bar-day';
-        lbl.textContent = String(d.getDate());
-        col.appendChild(track); col.appendChild(lbl);
-        el.appendChild(col);
-        (function(b, val) {
-            setTimeout(function() {
-                b.style.height = Math.max(val > 0 ? 8 : 0, Math.round(val / max * 100)) + '%';
-            }, 50 + i * 20);
-        })(bar, v);
-    });
-    var growthEl = document.getElementById('chart-growth');
-    if (growthEl) growthEl.textContent = (growth >= 0 ? '+' : '') + growth + '%';
-}
-
-function rebuildUsage(roles) {
-    const list = document.getElementById('usage-list');
-    if (!list || roles.length < 2) return;
-    list.innerHTML = '';
-    roles.slice(1).forEach((r, i) => {
-        const name = ROLE_NAMES_RU[r.id] || r.id;
-        const img = getRoleImg(r.id);
-        const row = document.createElement('div'); row.className = 'usage-row';
-        row.innerHTML = `
-            <div class="u-ava" style="background-image:url('${img}')"></div>
-            <div class="u-info">
-                <div class="u-name-row"><div class="u-name">${name}</div><div class="u-pct">${r.pct}%</div></div>
-                <div class="u-track"><div class="u-bar ${BAR_COLORS[i] || 'c1'}" style="width:${r.pct}%"></div></div>
-            </div>`;
-        list.appendChild(row);
-    });
-}
-
-var _subTimer;
-function startSubTimer(isoEnd, subType) {
-    if (_fakeTimer) { clearInterval(_fakeTimer); _fakeTimer = null; }
-    if (_subTimer) clearInterval(_subTimer);
-    var badge = document.querySelector('.sub-badge');
-    if (badge) badge.textContent = subType === 'trial' ? '🎁 Пробный период' : '✅ Pro подписка';
-    var end = new Date(isoEnd + (isoEnd.indexOf('Z') === -1 ? 'Z' : ''));
-    function tick() {
-        var diff = Math.max(0, Math.floor((end - Date.now()) / 1000));
-        function fmt(n) { return String(n).padStart(2, '0'); }
-        document.getElementById('td').textContent = fmt(Math.floor(diff / 86400));
-        document.getElementById('th').textContent = fmt(Math.floor((diff % 86400) / 3600));
-        document.getElementById('tm').textContent = fmt(Math.floor((diff % 3600) / 60));
-        document.getElementById('ts').textContent = fmt(diff % 60);
-    }
-    tick();
-    _subTimer = setInterval(tick, 1000);
-}
-
-function applyStats(s) {
-    try {
-        var stats = JSON.parse(atob(s.replace(/-/g, '+').replace(/_/g, '/')));
-        var streakEl = document.getElementById('stat-streak');
-        if (streakEl) streakEl.textContent = stats.d !== undefined ? stats.d : 0;
-        var wordsEl = document.getElementById('stat-words');
-        if (wordsEl) wordsEl.textContent = (stats.w || 0).toLocaleString('ru-RU');
-        if (stats.ch && stats.ch.length) rebuildChart(stats.ch, stats.gr || 0);
-        if (stats.r && stats.r.length) {
-            var fav = stats.r[0];
-            var favNameEl = document.getElementById('fav-name');
-            if (favNameEl) favNameEl.textContent = ROLE_NAMES_RU[fav.id] || fav.id;
-            var favJokeEl = document.getElementById('fav-joke');
-            if (favJokeEl) favJokeEl.textContent = ROLE_JOKES[fav.id] || 'твой любимчик 😏';
-            var favPctEl = document.getElementById('fav-pct');
-            if (favPctEl) favPctEl.textContent = fav.pct + '%';
-            var favAvaEl = document.getElementById('fav-ava');
-            if (favAvaEl) favAvaEl.style.backgroundImage = "url('" + getRoleImg(fav.id) + "')";
-            rebuildUsage(stats.r);
-        }
-        if (stats.se) startSubTimer(stats.se, stats.st || 'trial');
-    } catch(e) { /* ignore stats errors — never break the app */ }
 }
 
 // Show profile screen on first visit (no saved name)
+// In production: check Telegram WebApp initData for user data
 (function() {
-    const savedName   = localStorage.getItem('aibot_name');
+    const savedName = localStorage.getItem('aibot_name');
     const savedGender = localStorage.getItem('aibot_gender');
-    const savedMode   = localStorage.getItem('aibot_mode') || 'text';
-
-    setMode(savedMode);
-
     if (!savedName) {
         goTo('profile');
     } else {
@@ -1364,12 +1171,7 @@ function applyStats(s) {
         USER_GENDER = savedGender || 'male';
         pickGender(USER_GENDER);
         updateRoleImages();
-        updateHero();
     }
-
-    // Apply real stats from URL param
-    const sp = new URLSearchParams(location.search).get('s');
-    if (sp) applyStats(sp);
 })();
 </script>
 </body>

@@ -1331,7 +1331,18 @@ function applyStats(s) {
 (function() {
     const savedName   = localStorage.getItem('aibot_name');
     const savedGender = localStorage.getItem('aibot_gender');
-    const savedMode   = localStorage.getItem('aibot_mode') || 'text';
+
+    // Read mode from URL stats param first (authoritative DB value), fallback to localStorage
+    const sp = new URLSearchParams(location.search).get('s');
+    let modeFromStats = null;
+    if (sp) {
+        try {
+            const s = JSON.parse(atob(sp.replace(/-/g,'+').replace(/_/g,'/')));
+            if (s.m) modeFromStats = s.m;
+        } catch(e) {}
+    }
+    const savedMode = modeFromStats || localStorage.getItem('aibot_mode') || 'text';
+    if (modeFromStats) localStorage.setItem('aibot_mode', modeFromStats);
 
     setMode(savedMode);
 
@@ -1346,7 +1357,6 @@ function applyStats(s) {
     }
 
     // Apply real stats from URL param
-    const sp = new URLSearchParams(location.search).get('s');
     if (sp) applyStats(sp);
 })();
 </script>
